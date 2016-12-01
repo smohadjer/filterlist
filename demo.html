@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Filter your lists</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			/* all styles are optional and for demo only */
+			ul.demo {
+				margin: 0;
+				padding: 0;
+			}
+			ul.demo time {
+				display: none;
+			}
+			ul.demo li {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				border-bottom: solid 1px #ccc;
+				font-size: 1em;
+			}
+			h3, p {
+				margin: 10px 0;
+			}
+			.filters {
+				padding: 20px;
+				background: #ccc;
+			}
+			.filters select {
+				margin-right: 20px;
+				font-size: 1em;
+			}
+		</style>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script src="jquery.filterList.js"></script>
+		<script>
+			$(document).ready(function() {
+				var filterList;
+
+				$('ul.demo').filterList({
+					initCallback: function(pluginInstance) {
+						filterList = pluginInstance;
+					},
+					filtersCallback: function(pluginInstance) {
+						if ($('ul.demo').find('> li:visible').length === 0) {
+							alert('No results found!');
+						}
+					}
+				});
+
+				$('[name="teacher-id"]').on('change', function(e) {
+					filterList.setFilters({
+						'teacher-id': $(this).val()
+					});
+				});
+
+				$('[name="class-id"]').on('change', function(e) {
+					filterList.setFilters({
+						'class-id': $(this).val()
+					});
+				});
+
+				$('button').on('click', function() {
+					filterList.setFilters({
+						'class-id': 'all',
+						'teacher-id': 'all'
+					});
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="filters">
+				<label>Teacher:</label>
+				<select name="teacher-id">
+					<option selected value="all">All</option>
+					<option value="solmaz">Solmaz</option>
+					<option value="miguel">Miguel</option>
+					<option value="julia">Julia</option>
+					<option value="alexandra">Alexandra</option>
+					<option value="peter">Peter</option>
+					<option value="konstantina">Konstantina</option>
+				</select>
+				<label>Class:</label>
+				<select name="class-id">
+					<option selected value="all">All</option>
+					<option value="hatha-at-info">Hatha at Info</option>
+					<option value="hatha-at-fbs">Hatha at FBS</option>
+					<option value="special">108 Surya Namaskar</option>
+					<option value="weekend">Weekend Yoga</option>
+					<option value="yin">Yin Yoga</option>
+				</select>
+				<button>Reset to All</button>
+			</span>
+		</div>
+		<ul class="demo" data-json="content/schedule.json" data-filters-name="teacher-id class-id">
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
+				<h3>Hatha Yoga</h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			</li>
+			<li data-filter-teacher-id="peter" data-filter-class-id="weekend" style="">
+				<h3>Weekend Yoga at InFö</h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=peter">Peter</a></p>
+			</li>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info" style="">
+				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			</li>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
+				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			</li>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="weekend" style="">
+				<h3><a href="classes.php?id=weekend">Weekend Yoga at InFö</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			</li>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
+				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			</li>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
+				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			</li>
+			<li data-filter-teacher-id="konstantina" data-filter-class-id="weekend" style="">
+				<h3><a href="classes.php?id=weekend">Weekend Yoga at InFö</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=konstantina">Konstantina</a></p>
+			</li>
+			<li data-filter-teacher-id="julia" data-filter-class-id="hatha-at-info" style="">
+				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=julia">Julia</a></p>
+			</li>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="special" style="">
+				<h3><a href="classes.php?id=special">108 Sun Salutations</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			</li>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info" style="">
+				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			</li>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin" style="">
+				<h3><a href="classes.php?id=yin">Yin Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			</li>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-fbs" style="">
+				<h3><a href="classes.php?id=hatha-at-fbs">Hatha Yoga</a></h3>
+				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			</li>
+		</ul>
+    </body>
+</html>
