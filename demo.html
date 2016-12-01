@@ -2,37 +2,10 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Filter your lists</title>
+		<title>Filter lists</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style>
-			/* all styles are optional and for demo only */
-			ul.demo {
-				margin: 0;
-				padding: 0;
-			}
-			ul.demo time {
-				display: none;
-			}
-			ul.demo li {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-				border-bottom: solid 1px #ccc;
-				font-size: 1em;
-			}
-			h3, p {
-				margin: 10px 0;
-			}
-			.filters {
-				padding: 20px;
-				background: #ccc;
-			}
-			.filters select {
-				margin-right: 20px;
-				font-size: 1em;
-			}
-		</style>
+		<link rel="stylesheet" href="demo.css" />
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 		<script src="jquery.filterList.js"></script>
 		<script>
@@ -94,65 +67,65 @@
 			</span>
 		</div>
 		<ul class="demo" data-json="content/schedule.json" data-filters-name="teacher-id class-id">
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
 				<h3>Hatha Yoga</h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+				<p><strong>Teacher:</strong> Miguel</p>
 			</li>
-			<li data-filter-teacher-id="peter" data-filter-class-id="weekend" style="">
+			<li data-filter-teacher-id="peter" data-filter-class-id="weekend">
 				<h3>Weekend Yoga at InFö</h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=peter">Peter</a></p>
+				<p><strong>Teacher:</strong> Peter</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info" style="">
-				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
-				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Miguel</p>
 			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="weekend" style="">
-				<h3><a href="classes.php?id=weekend">Weekend Yoga at InFö</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="weekend">
+				<h3>Weekend Yoga at InFö</h3>
+				<p><strong>Teacher:</strong> Miguel</p>
 			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
-				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Miguel</p>
 			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info" style="">
-				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Miguel</p>
 			</li>
-			<li data-filter-teacher-id="julia" data-filter-class-id="hatha-at-info" style="">
-				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=julia">Julia</a></p>
+			<li data-filter-teacher-id="julia" data-filter-class-id="hatha-at-info">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Julia</p>
 			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="special" style="">
-				<h3><a href="classes.php?id=special">108 Sun Salutations</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=miguel">Miguel</a></p>
+			<li data-filter-teacher-id="miguel" data-filter-class-id="special">
+				<h3>108 Sun Salutations</h3>
+				<p><strong>Teacher:</strong> Miguel</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info" style="">
-				<h3><a href="classes.php?id=hatha-at-info">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin" style="">
-				<h3><a href="classes.php?id=yin">Yin Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
+				<h3>Yin Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin" style="">
-				<h3><a href="classes.php?id=yin">Yin Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
+				<h3>Yin Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin" style="">
-				<h3><a href="classes.php?id=yin">Yin Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
+				<h3>Yin Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin" style="">
-				<h3><a href="classes.php?id=yin">Yin Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
+				<h3>Yin Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-fbs" style="">
-				<h3><a href="classes.php?id=hatha-at-fbs">Hatha Yoga</a></h3>
-				<p class="teacher"><strong>Teacher:</strong> <a href="teachers.php?id=solmaz">Solmaz</a></p>
+			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-fbs">
+				<h3>Hatha Yoga</h3>
+				<p><strong>Teacher:</strong> Solmaz</p>
 			</li>
 		</ul>
     </body>
