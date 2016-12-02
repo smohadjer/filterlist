@@ -1,7 +1,7 @@
 /*
  * @name          filterList
- * @version       1.0
- * @lastmodified  2016-11-30
+ * @version       1.1
+ * @lastmodified  2016-12-02
  * @author        Saeid Mohadjer
  *
  * Licensed under the MIT License
@@ -41,8 +41,8 @@
 			pluginInstance.updateFiltersfromURL();
 			pluginInstance.setEventHandlers();
 			pluginInstance.updateBrowserHistory();
-			pluginInstance.applyFilters();
 			pluginInstance.options.initCallback(pluginInstance);
+			pluginInstance.applyFilters();
 		},
 
 		updateBrowserHistory: function() {
@@ -91,6 +91,17 @@
 		setEventHandlers: function() {
 			var pluginInstance = this;
 
+			$.each(pluginInstance.filters, function(filterName, filterValue) {
+				var $filterElement = $('[name="' + filterName + '"]');
+				if ($filterElement.length) {
+					$filterElement.on('change', function(e) {
+						var filterObject = {};
+						filterObject[filterName] = $(this).val();
+						pluginInstance.setFilters(filterObject);
+					});
+				}
+			});
+
 			if (pluginInstance.options.urlIsUpdatable) {
 				if (window.history && window.history.pushState)	{
 					window.addEventListener("popstate", function(e) {
@@ -126,13 +137,12 @@
 				pluginInstance.filters[key] = value;
 			});
 
+			pluginInstance.updateMarkupFilters(filters);
+			pluginInstance.applyFilters();
+
 			if (pluginInstance.options.urlIsUpdatable) {
 				pluginInstance.updateURL();
 			}
-
-			pluginInstance.updateMarkupFilters(filters);
-
-			pluginInstance.applyFilters();
 		},
 
 		applyFilters: function() {

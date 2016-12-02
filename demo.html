@@ -5,128 +5,66 @@
 		<title>Filter lists</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="demo.css" />
 		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 		<script src="jquery.filterList.js"></script>
 		<script>
 			$(document).ready(function() {
-				var filterList;
-
-				$('ul.demo').filterList({
-					initCallback: function(pluginInstance) {
-						filterList = pluginInstance;
+				$('ul').filterList({
+					//example of using callback function to filter list
+					initCallback: function(filter) {
+						console.log('initCallback');
+						$('button').on('click', function() {
+							filter.setFilters({
+								'continent': 'all'
+							});
+						});
 					},
-					filtersCallback: function(pluginInstance) {
-						if ($('ul.demo').find('> li:visible').length === 0) {
-							console.log('No results found!');
-						}
+					filtersCallback: function(filter) {
+						console.log('filtersCallback', filter.filters);
 					}
-				});
-
-				$('[name="teacher-id"]').on('change', function(e) {
-					filterList.setFilters({
-						'teacher-id': $(this).val()
-					});
-				});
-
-				$('[name="class-id"]').on('change', function(e) {
-					filterList.setFilters({
-						'class-id': $(this).val()
-					});
-				});
-
-				$('button').on('click', function() {
-					filterList.setFilters({
-						'class-id': 'all',
-						'teacher-id': 'all'
-					});
 				});
 			});
 		</script>
 	</head>
 	<body>
-		<div class="filters">
-				<label>Teacher:</label>
-				<select name="teacher-id">
-					<option selected value="all">All</option>
-					<option value="solmaz">Solmaz</option>
-					<option value="miguel">Miguel</option>
-					<option value="julia">Julia</option>
-					<option value="peter">Peter</option>
-				</select>
-				<label>Class:</label>
-				<select name="class-id">
-					<option selected value="all">All</option>
-					<option value="hatha-at-info">Hatha at Info</option>
-					<option value="hatha-at-fbs">Hatha at FBS</option>
-					<option value="special">108 Surya Namaskar</option>
-					<option value="weekend">Weekend Yoga</option>
-					<option value="yin">Yin Yoga</option>
-				</select>
-				<button>Reset to All</button>
-			</span>
-		</div>
-		<ul class="demo" data-json="content/schedule.json" data-filters-name="teacher-id class-id">
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Miguel</p>
-			</li>
-			<li data-filter-teacher-id="peter" data-filter-class-id="weekend">
-				<h3>Weekend Yoga at InFö</h3>
-				<p><strong>Teacher:</strong> Peter</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Miguel</p>
-			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="weekend">
-				<h3>Weekend Yoga at InFö</h3>
-				<p><strong>Teacher:</strong> Miguel</p>
-			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Miguel</p>
-			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Miguel</p>
-			</li>
-			<li data-filter-teacher-id="julia" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Julia</p>
-			</li>
-			<li data-filter-teacher-id="miguel" data-filter-class-id="special">
-				<h3>108 Sun Salutations</h3>
-				<p><strong>Teacher:</strong> Miguel</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-info">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
-				<h3>Yin Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
-				<h3>Yin Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
-				<h3>Yin Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="yin">
-				<h3>Yin Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
-			<li data-filter-teacher-id="solmaz" data-filter-class-id="hatha-at-fbs">
-				<h3>Hatha Yoga</h3>
-				<p><strong>Teacher:</strong> Solmaz</p>
-			</li>
+		<label>Filter by continent:</label>
+		<select name="continent">
+			<option selected value="all">All</option>
+			<option value="asia">Asia</option>
+			<option value="africa">Africa</option>
+			<option value="eu">Europe</option>
+			<option value="na">North America</option>
+			<option value="sa">South America</option>
+		</select>
+		<button>Reset</button>
+		<ul data-filters-name="continent">
+			<li data-filter-continent="asia">Afghanistan</li>
+			<li data-filter-continent="asia">Bangladesh</li>
+			<li data-filter-continent="asia">Cambodia</li>
+			<li data-filter-continent="asia">Iran</li>
+			<li data-filter-continent="asia">Japan</li>
+			<li data-filter-continent="asia">Nepal</li>
+			<li data-filter-continent="africa">Algeria</li>
+			<li data-filter-continent="africa">Angola</li>
+			<li data-filter-continent="africa">Burkina</li>
+			<li data-filter-continent="africa">Burundi</li>
+			<li data-filter-continent="africa">Cameroon</li>
+			<li data-filter-continent="africa">Chad</li>
+			<li data-filter-continent="africa">Egypt</li>
+			<li data-filter-continent="eu">Belarus</li>
+			<li data-filter-continent="eu">Cyprus</li>
+			<li data-filter-continent="eu">Denmark</li>
+			<li data-filter-continent="eu">Germany</li>
+			<li data-filter-continent="eu">France</li>
+			<li data-filter-continent="eu">Italy</li>
+			<li data-filter-continent="na">Bahamas</li>
+			<li data-filter-continent="na">Canada</li>
+			<li data-filter-continent="na">United States</li>
+			<li data-filter-continent="sa">Argentina</li>
+			<li data-filter-continent="sa">Brazil</li>
+			<li data-filter-continent="sa">Chile</li>
+			<li data-filter-continent="sa">Uruguay</li>
+
 		</ul>
     </body>
 </html>
