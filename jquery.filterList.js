@@ -1,6 +1,6 @@
 /*
  * @name          filterList
- * @version       2.0.0
+ * @version       2.0.1
  * @lastmodified  2017-03-20
  * @author        Saeid Mohadjer
  *
@@ -268,7 +268,10 @@
 				$(matchedItems).each(function() {
 					$(this).show();
 				});
+				pluginInstance.$element.removeClass('is-empty');
 				$listItems.filter(':visible').last().addClass('last-visible');
+			} else {
+				pluginInstance.$element.addClass('is-empty');
 			}
 
 			pluginInstance.options.filtersCallback(pluginInstance);

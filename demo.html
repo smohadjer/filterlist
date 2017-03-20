@@ -26,6 +26,15 @@
 				});
 			});
 		</script>
+		<style>
+			ul + p {
+				display: none;
+			}
+
+			ul.is-empty + p {
+				display: block;
+			}
+		</style>
 	</head>
 	<body>
 		<label>Filter by continent:</label>
@@ -71,5 +80,6 @@
 			<li data-filter-continent="sa">Chile</li>
 			<li data-filter-continent="sa">Uruguay</li>
 		</ul>
+		<p>No results found!</p>
     </body>
 </html>
