@@ -1,6 +1,6 @@
 /*
  * @name          filterList
- * @version       2.0.1
+ * @version       2.0.2
  * @lastmodified  2017-03-20
  * @author        Saeid Mohadjer
  *
@@ -287,7 +287,9 @@
 
 				$.each(pluginInstance.filters, function() {
 					var filter = this;
-					url = pluginInstance.updateQueryStringParameter(url, filter.name, filter.value);
+					if (filter.value !== undefined) {
+						url = pluginInstance.updateQueryStringParameter(url, filter.name, filter.value);
+					}
 				});
 
 				history.pushState(state, document.title, url);
