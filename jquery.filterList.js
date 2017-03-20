@@ -1,7 +1,7 @@
 /*
  * @name          filterList
- * @version       1.1
- * @lastmodified  2016-12-02
+ * @version       2.0.0
+ * @lastmodified  2017-03-20
  * @author        Saeid Mohadjer
  *
  * Licensed under the MIT License
@@ -36,10 +36,11 @@
 			var pluginInstance = this;
 
 			pluginInstance.url = window.location.href;
-			pluginInstance.filters = {};
-			pluginInstance.setDefaultFilters();
-			pluginInstance.updateFiltersfromURL();
+			pluginInstance.filterNames = pluginInstance.$element.data('filter-names').split(' ');
+
 			pluginInstance.setEventHandlers();
+			pluginInstance.setDefaultFilters(pluginInstance.filterNames);
+			pluginInstance.updateFiltersfromURL();
 			pluginInstance.updateBrowserHistory();
 			pluginInstance.options.initCallback(pluginInstance);
 			pluginInstance.applyFilters();
@@ -58,32 +59,83 @@
 			}
 		},
 
-		setDefaultFilters: function() {
+		setDefaultFilters: function(filterNames) {
 			var pluginInstance = this;
-			var filterNames = pluginInstance.$element.data('filters-name').split(' ');
 
-			$.each(filterNames, function(key, value) {
-				var selector = '[name="' + value + '"]';
+			pluginInstance.filters = [];
 
-				if ($(selector).length) {
-					pluginInstance.filters[value] = $(selector).val();
-				} else {
-					console.warn('No filter with name attribute set to ' + value + ' was found!');
-				}
+			$.each(filterNames, function() {
+				var filterName = this;
+				var filter = {};
+
+				filter.name = filterName;
+				//filter.type = pluginInstance.getFilterType(filterName);
+				filter.value = pluginInstance.getFilterValue(filterName);
+				filter.ignoreValue = pluginInstance.getFilterIgnoreValue(filterName);
+
+				pluginInstance.filters.push(filter);
 			});
+		},
+
+		getFilterValue: function(filterName) {
+			var pluginInstance = this;
+			var $filter = $('[name="' + filterName + '"]');
+			var filterValue;
+
+			if ($filter.length === 0) {
+				console.warn('No filter with name ' + filterName + ' was found in markup!');
+			} else {
+				if ($filter.attr('type') === 'checkbox') {
+					filterValue = $filter.is(':checked') ? $filter.val() : undefined;
+				} else {
+					filterValue = $filter.val();
+				}
+			}
+
+			return filterValue;
+		},
+
+		getFilterIgnoreValue: function(filterName) {
+			var pluginInstance = this;
+			var $elm = pluginInstance.$element;
+			var ignoreAttr = 'filter-' + filterName + '-ignore';
+			var ignoreValue = pluginInstance.$element.data(ignoreAttr);
+
+			return ignoreValue;
 		},
 
 		updateFiltersfromURL: function() {
 			var pluginInstance = this;
 
-			$.each(pluginInstance.filters, function(key, value) {
-				var newValue = pluginInstance.getUrlParameter(key);
-				var obj = {};
+			$.each(pluginInstance.filterNames, function() {
+				var filterName = this;
+				var newValue = pluginInstance.getUrlParameter(filterName);
+				var filter = {};
 
 				if (newValue) {
-					obj[key] = newValue;
-					pluginInstance.filters[key] = newValue;
-					pluginInstance.updateMarkupFilters(obj);
+					filter.name = filterName;
+					filter.value = newValue;
+					pluginInstance.updateFilters(filter, true);
+				}
+			});
+		},
+
+		updateFilters: function(updatedFilter, triggerEvent) {
+			var pluginInstance = this;
+
+			$.each(pluginInstance.filters, function() {
+				var filter = this;
+
+				if (updatedFilter.name === filter.name && updatedFilter.value !== filter.value) {
+					filter.value = updatedFilter.value;
+
+					if (triggerEvent) {
+						pluginInstance.$element.trigger('update-markupFilters', [filter]);
+					}
+
+					pluginInstance.applyFilters();
+
+					return false;
 				}
 			});
 		},
@@ -91,13 +143,27 @@
 		setEventHandlers: function() {
 			var pluginInstance = this;
 
-			$.each(pluginInstance.filters, function(filterName, filterValue) {
-				var $filterElement = $('[name="' + filterName + '"]');
-				if ($filterElement.length) {
-					$filterElement.on('change', function(e) {
-						var filterObject = {};
-						filterObject[filterName] = $(this).val();
-						pluginInstance.setFilters(filterObject);
+			pluginInstance.$element.on('update-markupFilters', function(e, filter) {
+				pluginInstance.updateMarkupFilters([filter]);
+			});
+
+			$.each(pluginInstance.filterNames, function() {
+				var filterName = this;
+				var $filter = $('[name="' + filterName + '"]');
+				var value;
+
+				if ($filter.length) {
+					$filter.on('change', function(e) {
+						var $this = $(this);
+						var filter = {};
+
+						filter.name = $this.attr('name');
+						filter.value = pluginInstance.getFilterValue(filter.name);
+						pluginInstance.updateFilters(filter);
+
+						if (pluginInstance.options.urlIsUpdatable) {
+							pluginInstance.updateURL();
+						}
 					});
 				}
 			});
@@ -118,13 +184,28 @@
 			}
 		},
 
-		updateMarkupFilters: function(filterObj) {
+		updateMarkupFilters: function(filtersArray) {
 			var pluginInstance = this;
 
-			$.each(filterObj, function(key, value) {
-				var selector = '[name="' + key + '"]';
-				if ($(selector).length) {
-					$(selector).val(value);
+			$.each(filtersArray, function() {
+				var filter = this;
+				var $filter = $('[name="' + filter.name + '"]');
+				var tagName;
+
+				if ($filter.length) {
+					tagName = $filter.prop('tagName');
+
+					if (tagName === 'SELECT') {
+						$filter.val(filter.value);
+					} else if (tagName === 'INPUT') {
+						if ($filter.attr('type') === 'checkbox') {
+							if (filter.value === $filter.val()) {
+								$filter.prop('checked', true);
+							} else {
+								$filter.prop('checked', false);
+							}
+						}
+					}
 				}
 			});
 		},
@@ -134,10 +215,14 @@
 			var pluginInstance = this;
 
 			$.each(filters, function(key, value) {
-				pluginInstance.filters[key] = value;
+				$.each(pluginInstance.filters, function() {
+					if (this.name === key) {
+						this.value = value;
+					}
+				});
 			});
 
-			pluginInstance.updateMarkupFilters(filters);
+			pluginInstance.updateMarkupFilters(pluginInstance.filters);
 			pluginInstance.applyFilters();
 
 			if (pluginInstance.options.urlIsUpdatable) {
@@ -147,37 +232,25 @@
 
 		applyFilters: function() {
 			var pluginInstance = this;
+			var matchedItems = [];
 			var $listItems = pluginInstance.$element.find('li');
-			var allFiltersSetToDeafult = true;
 
 			$listItems.removeClass('last-visible');
 
-			$.each(pluginInstance.filters, function(key, value) {
-				if (value !== 'all') {
-					allFiltersSetToDeafult = false;
-					return false; //end loop
-				}
-			});
-
-			// When no filters are set or all filters are set to all, do no
-			//filtering and show all items
-			if ($.isEmptyObject(pluginInstance.filters) || allFiltersSetToDeafult === true) {
-				$listItems.show();
-				pluginInstance.options.filtersCallback(pluginInstance);
-				return;
-			}
-
 			// If filters are set, only items whose data attributes
 			//match all the set filters would show
-			var matchedItems = [];
-
 			$listItems.each(function() {
 				var $li = $(this);
 				var matched = true;
 
-				$.each(pluginInstance.filters, function(key, value) {
-					if (value !== 'all') {
-						if (!$li.data('filter-' + key) || $li.data('filter-' + key) !== value) {
+				$.each(pluginInstance.filters, function() {
+					var filter = this;
+
+					if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
+						//any list item that doesn't have attribute for this filter or
+						//has attribute for this filter with another value should
+						//be filtered out.
+						if (!$li[0].hasAttribute('data-filter-' + filter.name) || $li.attr('data-filter-' + filter.name) !== filter.value) {
 							matched = false;
 							return false;
 						}
@@ -209,8 +282,9 @@
 				var state = {};
 				state.filters = $.extend({}, pluginInstance.filters);
 
-				$.each(pluginInstance.filters, function(key, value) {
-					url = pluginInstance.updateQueryStringParameter(url, key, value);
+				$.each(pluginInstance.filters, function() {
+					var filter = this;
+					url = pluginInstance.updateQueryStringParameter(url, filter.name, filter.value);
 				});
 
 				history.pushState(state, document.title, url);

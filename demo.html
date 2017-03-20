@@ -5,22 +5,23 @@
 		<title>Filter lists</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 		<script src="jquery.filterList.js"></script>
 		<script>
 			$(document).ready(function() {
 				$('ul').filterList({
 					//example of using callback function to filter list
 					initCallback: function(filter) {
-						console.log('initCallback');
-						$('button').on('click', function() {
+						//console.log('initCallback');
+						$('button.js-reset').on('click', function() {
 							filter.setFilters({
-								'continent': 'all'
+								'continent': 'all',
+								'gdp': undefined
 							});
 						});
 					},
 					filtersCallback: function(filter) {
-						console.log('filtersCallback', filter.filters);
+						//console.log('filtersCallback', filter.filters);
 					}
 				});
 			});
@@ -36,12 +37,17 @@
 			<option value="na">North America</option>
 			<option value="sa">South America</option>
 		</select>
-		<button>Reset</button>
-		<ul data-filters-name="continent">
+		<label>
+			<input type="checkbox" name="gdp" value="high" />
+			Show only rich countries!
+		</label>
+		<button class="js-reset">Reset all filters</button>
+		<h2>Countries:</h2>
+		<ul data-filter-names="continent gdp" data-filter-continent-ignore="all">
 			<li data-filter-continent="asia">Afghanistan</li>
 			<li data-filter-continent="asia">Bangladesh</li>
-			<li data-filter-continent="asia">Cambodia</li>
-			<li data-filter-continent="asia">Iran</li>
+			<li data-filter-continent="asia" data-filter-gdp="high">Singapore</li>
+			<li data-filter-continent="asia" data-filter-gdp="high">Qatar</li>
 			<li data-filter-continent="asia">Japan</li>
 			<li data-filter-continent="asia">Nepal</li>
 			<li data-filter-continent="africa">Algeria</li>
@@ -52,19 +58,18 @@
 			<li data-filter-continent="africa">Chad</li>
 			<li data-filter-continent="africa">Egypt</li>
 			<li data-filter-continent="eu">Belarus</li>
-			<li data-filter-continent="eu">Cyprus</li>
+			<li data-filter-continent="eu" data-filter-gdp="high">Luxembourg</li>
 			<li data-filter-continent="eu">Denmark</li>
-			<li data-filter-continent="eu">Germany</li>
+			<li data-filter-continent="eu" data-filter-gdp="high">Germany</li>
 			<li data-filter-continent="eu">France</li>
 			<li data-filter-continent="eu">Italy</li>
 			<li data-filter-continent="na">Bahamas</li>
-			<li data-filter-continent="na">Canada</li>
-			<li data-filter-continent="na">United States</li>
+			<li data-filter-continent="na" data-filter-gdp="high">Canada</li>
+			<li data-filter-continent="na" data-filter-gdp="high">United States</li>
 			<li data-filter-continent="sa">Argentina</li>
 			<li data-filter-continent="sa">Brazil</li>
 			<li data-filter-continent="sa">Chile</li>
 			<li data-filter-continent="sa">Uruguay</li>
-
 		</ul>
     </body>
 </html>
