@@ -12,13 +12,13 @@
 
 class FilterList {
 	constructor(options) {
-		this.options = options;
 		this.urlIsUpdatable = (options.urlIsUpdatable === undefined) ? false : options.urlIsUpdatable;
-		this.url = window.location.href;
 		this.element = options.element;
-		this.filterNames = options.element.getAttribute('data-filter-names').split(' ');
+		this.filterNames = this.element.getAttribute('data-filter-names').split(' ');
 		this.initCallback = options.initCallback;
 		this.filtersCallback = options.filtersCallback;
+		this.url = window.location.href;
+		this.lastClass = options.lastClass;
 
 		this.setEventHandlers();
 		this.setDefaultFilters(this.filterNames);
@@ -33,13 +33,10 @@ class FilterList {
 	}
 
 	updateBrowserHistory() {
-		if (this.urlIsUpdatable) {
-			//update history state that is pushed by browser
-			if (window.history && window.history.pushState)	{
-				let state = {};
-				state.filters = this.filters.slice();
-				history.replaceState(state, document.title, this.url);
-			}
+		if (this.urlIsUpdatable && window.history && window.history.pushState) {
+			let state = {};
+			state.filters = this.filters.slice();
+			history.replaceState(state, document.title, this.url);
 		}
 	}
 
@@ -58,7 +55,6 @@ class FilterList {
 	}
 
 	getFilterValue(filterName) {
-		var pluginInstance = this;
 		var $filter = document.querySelector(`[name="${filterName}"]`);
 		var filterValue;
 
@@ -96,21 +92,15 @@ class FilterList {
 	}
 
 	updateFilters(updatedFilter, triggerEvent) {
-		var pluginInstance = this;
-
-		this.filters.forEach((item, i) => {
-			var filter = item;
+		this.filters.forEach((filter, i) => {
 
 			if (updatedFilter.name === filter.name && updatedFilter.value !== filter.value) {
 				filter.value = updatedFilter.value;
+				this.applyFilters();
 
 				if (triggerEvent) {
-					//pluginInstance.element.trigger('update-markupFilters', [filter]);
-					const event = new CustomEvent('update-markupFilters', {detail: [filter]});
-					pluginInstance.element.dispatchEvent(event);
+					this.updateDOM([filter]);
 				}
-
-				pluginInstance.applyFilters();
 
 				return false;
 			}
@@ -118,20 +108,15 @@ class FilterList {
 	}
 
 	setEventHandlers() {
-		this.element.addEventListener('update-markupFilters', (e) => {
-			this.updateMarkupFilters(e.detail);
-		});
-
-		this.filterNames.forEach((item, i) => {
-			var filterName = item;
-			var $filter = document.querySelector('[name="' + filterName + '"]');
+		this.filterNames.forEach((filterName, i) => {
+			var filterElement = document.querySelector('[name="' + filterName + '"]');
 			var value;
 
-			if ($filter) {
-				$filter.addEventListener('change', (e) => {
+			if (filterElement) {
+				filterElement.addEventListener('change', (e) => {
 					var filter = {};
 
-					filter.name = $filter.getAttribute('name');
+					filter.name = filterElement.getAttribute('name');
 					filter.value = this.getFilterValue(filter.name);
 					this.updateFilters(filter);
 
@@ -142,39 +127,33 @@ class FilterList {
 			}
 		});
 
-		if (this.urlIsUpdatable) {
-			var _this = this;
-			if (window.history && window.history.pushState)	{
-				window.addEventListener("popstate", function(e) {
-					if (e.state.filters) {
-						for (var prop in e.state.filters) {
-							_this.filters[prop] = e.state.filters[prop];
-						};
+		if (this.urlIsUpdatable && window.history && window.history.pushState) {
+			window.addEventListener("popstate", (e) => {
+				if (e.state.filters) {
+					for (let prop in e.state.filters) {
+						this.filters[prop] = e.state.filters[prop];
+					};
 
-						_this.updateMarkupFilters(e.state.filters);
-						_this.applyFilters();
-					}
-				});
-			}
+					this.updateDOM(e.state.filters);
+					this.applyFilters();
+				}
+			});
 		}
 	}
 
-	updateMarkupFilters(filtersArray) {
+	updateDOM(filtersArray) {
 		for (let i in filtersArray) {
 			let filter = filtersArray[i];
-			//filtersArray.forEach((filter, i) => {
-			var $filter = document.querySelector(`[name="${filter.name}"]`);
+			let filterElement = document.querySelector(`[name="${filter.name}"]`);
 
-			if ($filter) {
-				if ($filter.tagName === 'SELECT') {
-					$filter.value = filter.value;
-				} else if ($filter.tagName === 'INPUT') {
-					if ($filter.getAttribute('type') === 'checkbox') {
-						if (filter.value === $filter.value) {
-							$filter.checked = true;
-						} else {
-							$filter.checked = false;
-						}
+			if (filterElement) {
+				if (filterElement.tagName === 'SELECT') {
+					filterElement.value = filter.value;
+				}
+
+				if (filterElement.tagName === 'INPUT') {
+					if (filterElement.getAttribute('type') === 'checkbox') {
+						filterElement.checked = (filterElement.value === filter.value) ? true : false;
 					}
 				}
 			}
@@ -191,7 +170,7 @@ class FilterList {
 			});
 		};
 
-		this.updateMarkupFilters(this.filters);
+		this.updateDOM(this.filters);
 		this.applyFilters();
 
 		if (this.urlIsUpdatable) {
@@ -201,14 +180,20 @@ class FilterList {
 
 	applyFilters() {
 		var matchedItems = [];
-		var $listItems = this.element.querySelectorAll('li');
+		var $listItems = this.element.children;
+
+		if (this.lastClass) {
+			let lastVisibleElement = this.element.querySelector(`.${this.lastClass}`);
+			if (lastVisibleElement) {
+				lastVisibleElement.classList.remove(this.lastClass);
+			}
+		}
 
 		// If filters are set, only items whose data attributes
 		//match all the set filters would show
-		[...$listItems].forEach((el) => {
-			//el.classList.remove('last-visible');
-			var $li = el;
-			var matched = true;
+		[...$listItems].forEach((element) => {
+			let $li = element;
+			let matched = true;
 
 			this.filters.forEach(function(item, i) {
 				var filter = item;
@@ -236,9 +221,14 @@ class FilterList {
 		if (matchedItems.length !== 0) {
 			matchedItems.forEach((item, i) => {
 				item.style.display = 'block';
+
+				//add a class to last visible item in the list in case last item in list needs special styling
+				if (this.lastClass && i === matchedItems.length - 1) {
+					item.classList.add(this.lastClass);
+				}
 			});
+
 			this.element.classList.remove('is-empty');
-			//$listItems.filter(':visible').last().addClass('last-visible');
 		} else {
 			this.element.classList.add('is-empty');
 		}
