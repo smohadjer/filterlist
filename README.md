@@ -1,9 +1,6 @@
-# filterList
-jQuery plugin for filtering lists
-
 Demo: 
-https://smohadjer.github.io/filterList/demo.html (jQuery version)
-https://smohadjer.github.io/filterList/demo.no.jquery.html (vanilla js version)
+- https://smohadjer.github.io/filterList/demo.html (jQuery version)
+- https://smohadjer.github.io/filterList/demo.no.jquery.html (vanilla js version)
 
 This jQuery plugin can be used to filter any arbitrary list of items. How to filter the list is up to you. You can filter a list using parameters in URL, or form elements in markup, or via script by using API's  setFilter() method. For examples see demos.
 
