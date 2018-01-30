@@ -141,6 +141,7 @@
 		},
 
 		setEventHandlers: function() {
+			console.log('test');
 			var pluginInstance = this;
 
 			pluginInstance.$element.on('update-markupFilters', function(e, filter) {
@@ -172,7 +173,9 @@
 				if (window.history && window.history.pushState)	{
 					window.addEventListener("popstate", function(e) {
 						if (e.state.filters) {
+							console.log(e.state.filters, pluginInstance.filters);
 							$.each(e.state.filters, function(key, value) {
+								console.log(key);
 								pluginInstance.filters[key] = value;
 							});
 
