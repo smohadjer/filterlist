@@ -20,17 +20,17 @@ var filter = new FilterList({
 - FilterList can update URL when filters change by setting option "urlIsUpdatable" to true.
 
 ### Options
-- **element: document.getElementById('myList')**
+- **element: document.getElementById('myList')**<br />
 This is the only required option.
 
-- **urlIsUpdatable: true**
+- **urlIsUpdatable: true**<br />
 If urlIsUpdatable is set to true (default is false) script updates browser URL when a filter changes.
 
-- **lastClass: 'last-visible-item'**
+- **lastClass: 'last-visible-item'**<br />
 This allows you to define a class to be set on last visible list item in case you want special styling for the last item in your list.
 
-- **initCallback: function() { console.log(this); }** 
+- **initCallback: function() { console.log(this); }**<br />
 This callback function is invoked as soon as FilterList is initialised.
 
-- **filtersCallback: function() { console.log(this); }** 
+- **filtersCallback: function() { console.log(this); }**<br />
 This callback function is invoked every time filters are applied.
