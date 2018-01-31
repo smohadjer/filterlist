@@ -34,3 +34,7 @@ This callback function is invoked as soon as FilterList is initialised.
 
 - **filtersCallback: function() { console.log(this); }**<br />
 This callback function is invoked every time filters are applied.
+
+### Public methods
+- **setFilter({filtername: filtervalue})**<br />
+Use this method to change a filter's value from javascript. For example you may want to add a button to your page that once clicked, it resets all filters to their initial value. For usage example see the demo page.
