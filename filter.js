@@ -1,7 +1,7 @@
 /*
- * @name          filterList
+ * @name          filter.js
  * @version       1.0.0
- * @lastmodified  2018-01-26
+ * @lastmodified  2018-01-31
  * @author        Saeid Mohadjer
  * @repo		  https://github.com/smohadjer/filterList
  *
@@ -10,10 +10,11 @@
 
 'use strict';
 
-class FilterList {
+class Filter {
 	constructor(options) {
 		this.urlIsUpdatable = (options.urlIsUpdatable === undefined) ? false : options.urlIsUpdatable;
 		this.element = options.element;
+		this.filters = [];
 		this.filterNames = this.element.getAttribute('data-filter-names').split(' ');
 		this.initCallback = options.initCallback;
 		this.filtersCallback = options.filtersCallback;
@@ -41,84 +42,71 @@ class FilterList {
 	}
 
 	setDefaultFilters(filterNames) {
-		this.filters = [];
-
 		filterNames.forEach((filterName, i) => {
-			let filter = {
-				name: filterName,
-				value: this.getFilterValue(filterName),
-				ignoreValue: this.getFilterIgnoreValue(filterName)
-			};
+			const ignoreValue = this.element.getAttribute(`data-filter-${filterName}-ignore`);
+			const filterValue = this.getFilterValue(filterName);
 
-			this.filters.push(filter);
+			this.filters.push({
+				name: filterName,
+				value: filterValue,
+				ignoreValue: ignoreValue
+			});
 		});
 	}
 
 	getFilterValue(filterName) {
-		var $filter = document.querySelector(`[name="${filterName}"]`);
-		var filterValue;
+		const filterElement = document.querySelector(`[name="${filterName}"]`);
+		let filterValue;
 
-		if ($filter.length === 0) {
-			console.warn('No filter with name ' + filterName + ' was found in markup!');
-		} else {
-			if ($filter.getAttribute('type') === 'checkbox') {
-				filterValue = $filter.checked ? $filter.value : undefined;
+		if (filterElement) {
+			if (filterElement.getAttribute('type') === 'checkbox') {
+				filterValue = filterElement.checked ? filterElement.value : undefined;
 			} else {
-				filterValue = $filter.value;
+				filterValue = filterElement.value;
 			}
+		} else {
+			console.warn('No filter with name ' + filterName + ' was found in markup!');
 		}
 
 		return filterValue;
 	}
 
-	getFilterIgnoreValue(filterName) {
-		var ignoreAttr = `data-filter-${filterName}-ignore`;
-		var ignoreValue = this.element.getAttribute(ignoreAttr);
-		return ignoreValue;
-	}
-
 	updateFiltersfromURL() {
-		this.filterNames.forEach((item, i) => {
-			var filterName = item;
-			var newValue = this.getUrlParameter(filterName);
-			var filter = {};
+		this.filterNames.forEach((filterName, i) => {
+			const newValue = this.getUrlParameter(filterName);
 
 			if (newValue) {
-				filter.name = filterName;
-				filter.value = newValue;
-				this.updateFilters(filter, true);
+				this.updateFilters({
+					name: filterName,
+					value: newValue
+				}, true);
 			}
 		});
 	}
 
 	updateFilters(updatedFilter, triggerEvent) {
-		this.filters.forEach((filter, i) => {
+		let filter = this.filters.find((filter) => filter.name === updatedFilter.name);
 
-			if (updatedFilter.name === filter.name && updatedFilter.value !== filter.value) {
-				filter.value = updatedFilter.value;
-				this.applyFilters();
+		if (filter && filter.value !== updatedFilter.value) {
+			filter.value = updatedFilter.value;
+			this.applyFilters();
 
-				if (triggerEvent) {
-					this.updateDOM([filter]);
-				}
-
-				return false;
+			if (triggerEvent) {
+				this.updateDOM([filter]);
 			}
-		});
+		}
 	}
 
 	setEventHandlers() {
 		this.filterNames.forEach((filterName, i) => {
-			var filterElement = document.querySelector('[name="' + filterName + '"]');
-			var value;
+			const filterElement = document.querySelector('[name="' + filterName + '"]');
 
 			if (filterElement) {
 				filterElement.addEventListener('change', (e) => {
-					var filter = {};
-
-					filter.name = filterElement.getAttribute('name');
-					filter.value = this.getFilterValue(filter.name);
-					this.updateFilters(filter);
+					this.updateFilters({
+						name: filterName,
+						value: this.getFilterValue(filterName)
+					});
 
 					if (this.urlIsUpdatable) {
 						this.updateURL();
@@ -162,7 +150,7 @@ class FilterList {
 
 	//public method for changing filters
 	setFilters(filters) {
-		for (var property in filters) {
+		for (let property in filters) {
 			this.filters.forEach(function(item, i) {
 				if (item.name === property) {
 					item.value = filters[property];
@@ -179,8 +167,8 @@ class FilterList {
 	}
 
 	applyFilters() {
-		var matchedItems = [];
-		var $listItems = this.element.children;
+		let matchedItems = [];
+		const $listItems = this.element.children;
 
 		if (this.lastClass) {
 			let lastVisibleElement = this.element.querySelector(`.${this.lastClass}`);
@@ -195,9 +183,7 @@ class FilterList {
 			let $li = element;
 			let matched = true;
 
-			this.filters.forEach(function(item, i) {
-				var filter = item;
-
+			this.filters.forEach(function(filter, i) {
 				if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
 					//any list item that doesn't have attribute for this filter or
 					//has attribute for this filter with another value should
@@ -239,19 +225,17 @@ class FilterList {
 	}
 
 	updateURL() {
-		var url = this.url;
-
 		if (window.history && window.history.pushState)	{
-			var state = {};
+			let state = {};
 			state.filters = Object.assign({}, this.filters);
 
 			this.filters.forEach((filter) => {
 				if (filter.value !== undefined) {
-					url = this.updateQueryStringParameter(url, filter.name, filter.value);
+					this.url = this.updateQueryStringParameter(this.url, filter.name, filter.value);
 				}
 			});
 
-			history.pushState(state, document.title, url);
+			history.pushState(state, document.title, this.url);
 		}
 	}
 

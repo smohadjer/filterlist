@@ -2,37 +2,21 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Filter lists</title>
+		<title>Demo page for filter.js</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-		<script src="jquery.filterList.js"></script>
-		<script>
-			$(document).ready(function() {
-				$('ul').filterList({
-					//example of using callback function to filter list
-					initCallback: function(filter) {
-						//console.log('initCallback');
-						$('button.js-reset').on('click', function() {
-							filter.setFilters({
-								'continent': 'all',
-								'gdp': undefined
-							});
-						});
-					},
-					filtersCallback: function(filter) {
-						//console.log('filtersCallback', filter.filters);
-					}
-				});
-			});
-		</script>
 		<style>
-			ul + p {
+			/* these rules are for demo only */
+		 	.no-results {
 				display: none;
 			}
 
-			ul.is-empty + p {
+			ul.is-empty + .no-results {
 				display: block;
+			}
+
+			li.last-visible-item {
+				background: yellow;
 			}
 		</style>
 	</head>
@@ -52,7 +36,7 @@
 		</label>
 		<button class="js-reset">Reset all filters</button>
 		<h2>Countries:</h2>
-		<ul data-filter-names="continent gdp" data-filter-continent-ignore="all">
+		<ul class="myList" data-filter-names="continent gdp" data-filter-continent-ignore="all">
 			<li data-filter-continent="asia">Afghanistan</li>
 			<li data-filter-continent="asia">Bangladesh</li>
 			<li data-filter-continent="asia" data-filter-gdp="high">Singapore</li>
@@ -80,6 +64,30 @@
 			<li data-filter-continent="sa">Chile</li>
 			<li data-filter-continent="sa">Uruguay</li>
 		</ul>
-		<p>No results found!</p>
+		<p class="no-results">No results found!</p>
+		<script src="filter.js"></script>
+		<script>
+			var filter = new Filter({
+				element: document.querySelector('.myList'),
+				urlIsUpdatable: true,
+				lastClass: 'last-visible-item',
+
+				//is invoked after class is initialized
+				initCallback: function() {
+					//console.log('initCallback', this);
+					document.querySelector('button.js-reset').addEventListener('click', () => {
+						this.setFilters({
+							'continent': 'all',
+							'gdp': undefined
+						});
+					});
+				},
+
+				//is invoked every time filters are applied
+				filtersCallback: function() {
+					//console.log('filtersCallback', this.filters);
+				}
+			});
+		</script>
     </body>
 </html>
