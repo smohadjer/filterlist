@@ -1,15 +1,33 @@
-Demo: 
-- https://smohadjer.github.io/filterList/demo.html (jQuery version)
-- https://smohadjer.github.io/filterList/demo.no.jquery.html (vanilla js version)
+Demo: https://smohadjer.github.io/filterList/demo.html
 
-This jQuery plugin can be used to filter any arbitrary list of items. How to filter the list is up to you. You can filter a list using parameters in URL, or form elements in markup, or via script by using API's  setFilter() method. For examples see demos.
+filterList.js is a vanilla js script that can be used to filter any arbitrary list of items. How to filter the list is up to you. You can filter a list using only parameters in URL, or using form elements in markup such as select or checboxes, or from your own scripts by calling filterList's "setFilters()" method. For examples see demo page.
 
 How to use:
-- Include script jQuery.filterList.js in your page and initialise plugin using: $(‘.myList’).filterList();
-- You can use any HTML element for markup. Name of filters can be provided on the list element using data attribute with the syntax data-filters-name=“filtername1 filtername2”.
-- List Items that should be filtered need a data attribute with syntax data-filter-filtername=“filtervalue”.
+- Include script filterList.js in your page and initialise "FilterList" class using:
+var filter = new FilterList({
+	element: document.querySelector('.myFilterableList')
+});
+
+- Name of filters should be set on the list element (ul or ol) using data attribute with the syntax data-filters-name=“filtername1 filtername2”.
+- List items that match a filter need a data attribute with syntax data-filter-filtername=“filtervalue”.
 - Use data="data-filter-filterName-ignore="ignoreValue" to specify an ignore value for a filter. If a filter has this value, the filter will be ignored (no filtering).
 
 Features:
-- Requires no CSS and allows you to use your own markup structure.
-- Filtering by default is URL aware (list can be filtered via URL parameters and changing list filtering updates URL parameters).
+- The script has no javascript dependencies and no CSS.
+- FilterList can update URL when filters change by setting option "urlIsUpdatable" to true.
+
+Options:
+- element : document.getElementById('myList')
+This is the only required option.
+
+- urlIsUpdatable: true
+If urlIsUpdatable is set to true (default is false) script updates browser URL when a filter changes.
+
+- lastClass: 'last-visible-item'
+This allows you to define a class to be set on last visible list item in case you want special styling for the last item in your list.
+
+- initCallback: function() { console.log(this); }
+This callback function is invoked as soon as FilterList is initialised.
+
+- filtersCallback: function() { console.log(this); }
+This callback function is invoked every time filters are applied.
