@@ -1,7 +1,4 @@
-filterList.js is a vanilla js script that can be used to filter any arbitrary list of items. How to filter the list is up to you. You can filter a list using only parameters in URL, or using form elements in markup such as select or checboxes, or from your own scripts by calling filterList's "setFilters()" method. For examples see demo page.
-
-### Demo
-https://smohadjer.github.io/filterList/demo.html
+The filterList.js is a vanilla js script with no dependency that can be used to filter any list. How to filter a list is up to you. You can filter it using only parameters in URL, or using form elements in markup, or from your own scripts using callbacks and public methods. For examples see [demo page](https://smohadjer.github.io/filterList/demo.html).
 
 ### How to use
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
