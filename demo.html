@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>Demo page for filter.js</title>
+		<title>Demo for filterList.js</title>
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
@@ -65,9 +65,9 @@
 			<li data-filter-continent="sa">Uruguay</li>
 		</ul>
 		<p class="no-results">No results found!</p>
-		<script src="filter.js"></script>
+		<script src="filterlist.js"></script>
 		<script>
-			var filter = new Filter({
+			var filter = new FilterList({
 				element: document.querySelector('.myList'),
 				urlIsUpdatable: true,
 				lastClass: 'last-visible-item',

@@ -1,6 +1,6 @@
 /*
- * @name          filter.js
- * @version       1.0.0
+ * @name          filterList.js
+ * @version       3.0.0
  * @lastmodified  2018-01-31
  * @author        Saeid Mohadjer
  * @repo		  https://github.com/smohadjer/filterList
@@ -10,7 +10,7 @@
 
 'use strict';
 
-class Filter {
+class FilterList {
 	constructor(options) {
 		this.urlIsUpdatable = (options.urlIsUpdatable === undefined) ? false : options.urlIsUpdatable;
 		this.element = options.element;
