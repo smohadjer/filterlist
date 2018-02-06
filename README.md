@@ -1,4 +1,4 @@
-The filterList.js is a vanilla js script with no dependency that can be used to filter HTML lists. Lists can be filtered using URL parameters or form fields by simply setting data attrbiutes on list items that correspond to name of those parameters or form fields. For examples see [demo page](https://smohadjer.github.io/filterList/demo/demo.html).
+filterList.js is a vanilla js script with no dependency that can be used to filter any HTML list or group of elements. Filter can be set via URL parameters or form elements by adding appropriate data attrbiutes to list items. For examples see [demo page](https://smohadjer.github.io/filterList/demo/demo.html).
 
 ### How to use
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
@@ -8,9 +8,9 @@ var filter = new FilterList({
 	element: document.querySelector('.myFilterableList')
 });
 ```
-- Name of filters should be set on the list element (ul or ol) using data attribute with the syntax `data-filters-name=“filtername1 filtername2”`.
+- Name of filters should be set on the list's parent element using data attribute with the syntax `data-filters-name=“filtername1 filtername2”`.
 - List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue”`.
-- Use `data-ignore="ignoreValue"` on form elements such as "Select" to specify an ignore value for them. If the element has this value, no filtering will be applied to your list.
+- Use `data-ignore="ignoreValue"` on form elements such as "Select" to specify value that should be taken into account during filtering, for example an "all" value in dropdown list. 
 
 ### Features
 - The script has no javascript dependencies and no CSS.
