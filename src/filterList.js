@@ -1,7 +1,7 @@
 /*
  * @name          filterList.js
- * @version       3.0.0
- * @lastmodified  2018-01-31
+ * @version       3.0.2
+ * @lastmodified  2018-02-05
  * @author        Saeid Mohadjer
  * @repo		  https://github.com/smohadjer/filterList
  *
@@ -19,7 +19,8 @@ class FilterList {
 		this.initCallback = options.initCallback;
 		this.filtersCallback = options.filtersCallback;
 		this.url = window.location.href;
-		this.lastClass = options.lastClass;
+		this.lastClass = options.lastClass || 'last';
+		this.hiddenClass = options.hiddenClass || 'hidden';
 
 		this.setEventHandlers();
 		this.setDefaultFilters(this.filterNames);
@@ -168,7 +169,7 @@ class FilterList {
 
 	applyFilters() {
 		let matchedItems = [];
-		const $listItems = this.element.children;
+		const listItems = this.element.children;
 
 		if (this.lastClass) {
 			let lastVisibleElement = this.element.querySelector(`.${this.lastClass}`);
@@ -179,8 +180,7 @@ class FilterList {
 
 		// If filters are set, only items whose data attributes
 		//match all the set filters would show
-		[...$listItems].forEach((element) => {
-			let $li = element;
+		[...listItems].forEach((element) => {
 			let matched = true;
 
 			this.filters.forEach(function(filter, i) {
@@ -188,7 +188,7 @@ class FilterList {
 					//any list item that doesn't have attribute for this filter or
 					//has attribute for this filter with another value should
 					//be filtered out.
-					if (!$li.hasAttribute('data-filter-' + filter.name) || $li.getAttribute('data-filter-' + filter.name) !== filter.value) {
+					if (!element.hasAttribute('data-filter-' + filter.name) || element.getAttribute('data-filter-' + filter.name) !== filter.value) {
 						matched = false;
 						return false;
 					}
@@ -196,17 +196,17 @@ class FilterList {
 			});
 
 			if (matched) {
-				matchedItems.push($li);
+				matchedItems.push(element);
 			}
 		});
 
-		[...$listItems].forEach(function(el) {
-			el.style.display = 'none';
+		[...listItems].forEach((el) => {
+			el.classList.add(this.hiddenClass);
 		});
 
 		if (matchedItems.length !== 0) {
 			matchedItems.forEach((item, i) => {
-				item.style.display = 'block';
+				item.classList.remove(this.hiddenClass);
 
 				//add a class to last visible item in the list in case last item in list needs special styling
 				if (this.lastClass && i === matchedItems.length - 1) {
@@ -230,8 +230,10 @@ class FilterList {
 			state.filters = Object.assign({}, this.filters);
 
 			this.filters.forEach((filter) => {
-				if (filter.value !== undefined) {
+				if (filter.value !== undefined && filter.value.length !== 0) {
 					this.url = this.updateQueryStringParameter(this.url, filter.name, filter.value);
+				} else {
+					this.url = this.removeURLParameter(this.url, filter.name);
 				}
 			});
 
@@ -264,5 +266,29 @@ class FilterList {
 		} else {
 			return uri + separator + key + "=" + value;
 		}
+	}
+
+	removeURLParameter(url, parameter) {
+	    //prefer to use l.search if you have a location/link object
+	    var urlparts= url.split('?');
+	    if (urlparts.length >= 2) {
+			console.log('remove', parameter);
+
+	        var prefix= encodeURIComponent(parameter)+'=';
+	        var pars= urlparts[1].split(/[&;]/g);
+
+	        //reverse iteration as may be destructive
+	        for (var i= pars.length; i-- > 0;) {
+	            //idiom for string.startsWith
+	            if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+	                pars.splice(i, 1);
+	            }
+	        }
+
+	        url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+	        return url;
+	    } else {
+	        return url;
+	    }
 	}
 }

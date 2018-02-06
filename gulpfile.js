@@ -5,12 +5,15 @@ const runSequence = require('run-sequence');
 const rename = require("gulp-rename");
 const watch = require('gulp-watch');
 const batch = require('gulp-batch');
+const sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('babel', () =>
 	gulp.src('src/*.js')
+		.pipe(sourcemaps.init())
 		.pipe(babel({
 				presets: ['env']
 			}))
+		.pipe(sourcemaps.write('.'))
 		.pipe(gulp.dest('dist'))
 );
 
@@ -23,7 +26,7 @@ gulp.task('compress', () => {
 
 gulp.task('watches6', () => {
 	watch('src/*.js', batch(function (events, done) {
-		gulp.start('build', done);
+		gulp.start('babel', done);
 	}));
 });
 

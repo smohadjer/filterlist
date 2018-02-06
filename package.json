@@ -1,6 +1,6 @@
 {
   "name": "filterlist",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "The filterList.js is a vanilla js script with no dependency that can be used to filter any list. How to filter a list is up to you. You can filter it using only parameters in URL, or using form elements in markup, or from your own scripts using callbacks and public methods. For examples see [demo page](https://smohadjer.github.io/filterList/demo.html).",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "gulp-babel": "^7.0.1",
     "gulp-batch": "^1.0.5",
     "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "gulp-watch": "^5.0.0",
     "run-sequence": "^1.1.5"
