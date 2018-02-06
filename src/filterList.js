@@ -1,7 +1,7 @@
 /*
  * @name          filterList.js
- * @version       3.0.2
- * @lastmodified  2018-02-05
+ * @version       3.1.0
+ * @lastmodified  2018-02-06
  * @author        Saeid Mohadjer
  * @repo		  https://github.com/smohadjer/filterList
  *
@@ -44,7 +44,7 @@ class FilterList {
 
 	setDefaultFilters(filterNames) {
 		filterNames.forEach((filterName, i) => {
-			const ignoreValue = this.element.getAttribute(`data-filter-${filterName}-ignore`);
+			const ignoreValue = this.getFilterIgnoreValue(filterName);
 			const filterValue = this.getFilterValue(filterName);
 
 			this.filters.push({
@@ -53,6 +53,21 @@ class FilterList {
 				ignoreValue: ignoreValue
 			});
 		});
+	}
+
+	getFilterIgnoreValue(filterName) {
+		const filterElement = document.querySelector(`[name="${filterName}"]`);
+		let ignoreValue;
+
+		if (filterElement) {
+			if (filterElement.tagName === 'SELECT') {
+				ignoreValue = filterElement.getAttribute('data-ignore');
+			}
+		} else {
+			console.warn('No filter with name ' + filterName + ' was found in markup!');
+		}
+
+		return ignoreValue;
 	}
 
 	getFilterValue(filterName) {
@@ -230,7 +245,7 @@ class FilterList {
 			state.filters = Object.assign({}, this.filters);
 
 			this.filters.forEach((filter) => {
-				if (filter.value !== undefined && filter.value.length !== 0) {
+				if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
 					this.url = this.updateQueryStringParameter(this.url, filter.name, filter.value);
 				} else {
 					this.url = this.removeURLParameter(this.url, filter.name);
@@ -272,8 +287,6 @@ class FilterList {
 	    //prefer to use l.search if you have a location/link object
 	    var urlparts= url.split('?');
 	    if (urlparts.length >= 2) {
-			console.log('remove', parameter);
-
 	        var prefix= encodeURIComponent(parameter)+'=';
 	        var pars= urlparts[1].split(/[&;]/g);
 

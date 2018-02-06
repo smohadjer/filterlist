@@ -42,8 +42,8 @@
 	<body>
 		<h2>Filter Countries by continent or GDP</h2>
 		<section class="filters">
-			<select name="continent">
-				<option selected value="">Filter by continent</option>
+			<select name="continent" data-ignore="all">
+				<option value="all">Filter by continent</option>
 				<option value="asia">Asia</option>
 				<option value="africa">Africa</option>
 				<option value="eu">Europe</option>
@@ -56,7 +56,7 @@
 			</label>
 			<button class="js-reset">Reset Filters</button>
 		</section>
-		<div class="myList" data-filter-names="continent gdp" data-filter-continent-ignore="all">
+		<div class="myList" data-filter-names="continent gdp">
 			<span data-filter-continent="asia">Afghanistan</span>
 			<span data-filter-continent="asia">Bangladesh</span>
 			<span data-filter-continent="asia" data-filter-gdp="high">Singapore</span>
@@ -98,7 +98,7 @@
 					//console.log('initCallback', this);
 					document.querySelector('button.js-reset').addEventListener('click', () => {
 						this.setFilters({
-							'continent': undefined,
+							'continent': 'all',
 							'gdp': undefined
 						});
 					});

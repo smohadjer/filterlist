@@ -1,11 +1,18 @@
-const gulp = require('gulp');
-const babel = require('gulp-babel');
-const uglify = require('gulp-uglify');
-const runSequence = require('run-sequence');
-const rename = require("gulp-rename");
-const watch = require('gulp-watch');
-const batch = require('gulp-batch');
-const sourcemaps = require('gulp-sourcemaps');
+const gulp = require('gulp'),
+	babel = require('gulp-babel'),
+	uglify = require('gulp-uglify'),
+	runSequence = require('run-sequence'),
+	rename = require("gulp-rename"),
+	watch = require('gulp-watch'),
+	batch = require('gulp-batch'),
+	sourcemaps = require('gulp-sourcemaps'),
+	del = require('del');
+
+gulp.task('clean:dist', function () {
+	return del([
+		'./dist/**/*'
+	]);
+});
 
 gulp.task('babel', () =>
 	gulp.src('src/*.js')
@@ -39,6 +46,7 @@ gulp.task('serve', function(callback) {
 
 gulp.task('build', function(callback) {
 	runSequence(
+		['clean:dist'],
 		['babel'],
 		['compress'],
 		callback);

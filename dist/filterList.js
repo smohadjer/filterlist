@@ -1,7 +1,7 @@
 /*
  * @name          filterList.js
- * @version       3.0.2
- * @lastmodified  2018-02-05
+ * @version       3.1.0
+ * @lastmodified  2018-02-06
  * @author        Saeid Mohadjer
  * @repo		  https://github.com/smohadjer/filterList
  *
@@ -57,8 +57,11 @@ var FilterList = function () {
 			var _this = this;
 
 			filterNames.forEach(function (filterName, i) {
-				var ignoreValue = _this.element.getAttribute('data-filter-' + filterName + '-ignore');
+				//const ignoreValue = this.element.getAttribute(`data-filter-${filterName}-ignore`);
+				var ignoreValue = _this.getFilterIgnoreValue(filterName);
 				var filterValue = _this.getFilterValue(filterName);
+
+				console.log('default filters: ', filterName, filterValue, ignoreValue);
 
 				_this.filters.push({
 					name: filterName,
@@ -66,6 +69,22 @@ var FilterList = function () {
 					ignoreValue: ignoreValue
 				});
 			});
+		}
+	}, {
+		key: 'getFilterIgnoreValue',
+		value: function getFilterIgnoreValue(filterName) {
+			var filterElement = document.querySelector('[name="' + filterName + '"]');
+			var ignoreValue = void 0;
+
+			if (filterElement) {
+				if (filterElement.tagName === 'SELECT') {
+					ignoreValue = filterElement.getAttribute('data-ignore');
+				}
+			} else {
+				console.warn('No filter with name ' + filterName + ' was found in markup!');
+			}
+
+			return ignoreValue;
 		}
 	}, {
 		key: 'getFilterValue',
@@ -127,6 +146,7 @@ var FilterList = function () {
 
 				if (filterElement) {
 					filterElement.addEventListener('change', function (e) {
+						console.log(filterName, _this3.getFilterValue(filterName));
 						_this3.updateFilters({
 							name: filterName,
 							value: _this3.getFilterValue(filterName)
@@ -269,7 +289,7 @@ var FilterList = function () {
 				state.filters = Object.assign({}, this.filters);
 
 				this.filters.forEach(function (filter) {
-					if (filter.value !== undefined && filter.value.length !== 0) {
+					if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
 						_this6.url = _this6.updateQueryStringParameter(_this6.url, filter.name, filter.value);
 					} else {
 						_this6.url = _this6.removeURLParameter(_this6.url, filter.name);
@@ -316,8 +336,6 @@ var FilterList = function () {
 			//prefer to use l.search if you have a location/link object
 			var urlparts = url.split('?');
 			if (urlparts.length >= 2) {
-				console.log('remove', parameter);
-
 				var prefix = encodeURIComponent(parameter) + '=';
 				var pars = urlparts[1].split(/[&;]/g);
 

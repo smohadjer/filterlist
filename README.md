@@ -10,7 +10,7 @@ var filter = new FilterList({
 ```
 - Name of filters should be set on the list element (ul or ol) using data attribute with the syntax `data-filters-name=“filtername1 filtername2”`.
 - List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue”`.
-- Use `data="data-filter-filterName-ignore="ignoreValue"` to specify an ignore value for a filter. If a filter has this value, the filter will be ignored (no filtering).
+- Use `data-ignore="ignoreValue"` on form elements such as "Select" to specify an ignore value for them. If the element has this value, no filtering will be applied to your list.
 
 ### Features
 - The script has no javascript dependencies and no CSS.
@@ -23,8 +23,11 @@ This is the only required option.
 - **urlIsUpdatable: true**<br />
 If urlIsUpdatable is set to true (default is false) script updates browser URL when a filter changes.
 
-- **lastClass: 'last-visible-item'**<br />
+- **lastClass: type string, default = 'last'**<br />
 This allows you to define a class to be set on last visible list item in case you want special styling for the last item in your list.
+
+- **hiddenClass: type string, default = 'hidden'**<br />
+This allows you to define a class to be set on elements that are filtered out. Styles you set with this class will be applied to elements that do not mach the currently set filters.
 
 - **initCallback: function() { console.log(this); }**<br />
 This callback function is invoked as soon as FilterList is initialised.
