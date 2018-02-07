@@ -1,4 +1,4 @@
-filterList.js is a vanilla js script with no dependency that can be used to filter any HTML list or group of elements. Filter can be set via URL parameters or form elements by adding appropriate data attrbiutes to list items. For examples see [demo page](https://smohadjer.github.io/filterList/demo/demo.html).
+filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in vanilla JavaScript and has no dependencies. For examples see [demo page](https://smohadjer.github.io/filterList/demo/demo.html).
 
 ### How to use
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
