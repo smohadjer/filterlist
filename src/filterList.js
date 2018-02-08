@@ -8,7 +8,7 @@
  * Licensed under the MIT License
  */
 
-import {getUrlParameter, updateQueryStringParameter, removeURLParameter} from './utils.js';
+import * as utils from './utils.js';
 
 'use strict';
 
@@ -45,7 +45,7 @@ export default class FilterList {
 	}
 
 	setDefaultFilters(filterNames) {
-		filterNames.forEach((filterName, i) => {
+		filterNames.forEach((filterName) => {
 			const ignoreValue = this.getFilterIgnoreValue(filterName);
 			const filterValue = this.getFilterValue(filterName);
 
@@ -90,8 +90,8 @@ export default class FilterList {
 	}
 
 	updateFiltersfromURL() {
-		this.filterNames.forEach((filterName, i) => {
-			const newValue = getUrlParameter(filterName);
+		this.filterNames.forEach((filterName) => {
+			const newValue = utils.getUrlParameter(filterName);
 
 			if (newValue) {
 				this.updateFilters({
@@ -116,11 +116,11 @@ export default class FilterList {
 	}
 
 	setEventHandlers() {
-		this.filterNames.forEach((filterName, i) => {
+		this.filterNames.forEach((filterName) => {
 			const filterElement = document.querySelector('[name="' + filterName + '"]');
 
 			if (filterElement) {
-				filterElement.addEventListener('change', (e) => {
+				filterElement.addEventListener('change', () => {
 					this.updateFilters({
 						name: filterName,
 						value: this.getFilterValue(filterName)
@@ -169,7 +169,7 @@ export default class FilterList {
 	//public method for changing filters
 	setFilters(filters) {
 		for (let property in filters) {
-			this.filters.forEach(function(item, i) {
+			this.filters.forEach(function(item) {
 				if (item.name === property) {
 					item.value = filters[property];
 				}
@@ -200,7 +200,7 @@ export default class FilterList {
 		[...listItems].forEach((element) => {
 			let matched = true;
 
-			this.filters.forEach(function(filter, i) {
+			this.filters.forEach(function(filter) {
 				if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
 					//any list item that doesn't have attribute for this filter or
 					//has attribute for this filter with another value should
@@ -248,9 +248,9 @@ export default class FilterList {
 
 			this.filters.forEach((filter) => {
 				if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
-					this.url = updateQueryStringParameter(this.url, filter.name, filter.value);
+					this.url = utils.updateQueryStringParameter(this.url, filter.name, filter.value);
 				} else {
-					this.url = removeURLParameter(this.url, filter.name);
+					this.url = utils.removeURLParameter(this.url, filter.name);
 				}
 			});
 

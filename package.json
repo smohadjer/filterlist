@@ -1,8 +1,8 @@
 {
   "name": "filterlist",
   "version": "3.0.2",
-  "description": "The filterList.js is a vanilla js script with no dependency that can be used to filter any list. How to filter a list is up to you. You can filter it using only parameters in URL, or using form elements in markup, or from your own scripts using callbacks and public methods. For examples see [demo page](https://smohadjer.github.io/filterList/demo.html).",
-  "main": "index.js",
+  "description": "filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies.",
+  "main": "src/filterList.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,6 +23,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-batch": "^1.0.5",
+    "gulp-eslint": "^4.0.2",
     "gulp-rename": "^1.2.2",
     "gulp-rollup": "^2.16.2",
     "gulp-sourcemaps": "^2.6.4",
@@ -31,6 +32,7 @@
     "rollup": "^0.55.3",
     "rollup-stream": "^1.24.1",
     "run-sequence": "^1.1.5",
+    "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   }
 }

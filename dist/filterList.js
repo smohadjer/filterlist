@@ -94,7 +94,7 @@ class FilterList {
 	}
 
 	setDefaultFilters(filterNames) {
-		filterNames.forEach((filterName, i) => {
+		filterNames.forEach((filterName) => {
 			const ignoreValue = this.getFilterIgnoreValue(filterName);
 			const filterValue = this.getFilterValue(filterName);
 
@@ -139,7 +139,7 @@ class FilterList {
 	}
 
 	updateFiltersfromURL() {
-		this.filterNames.forEach((filterName, i) => {
+		this.filterNames.forEach((filterName) => {
 			const newValue = getUrlParameter(filterName);
 
 			if (newValue) {
@@ -165,11 +165,11 @@ class FilterList {
 	}
 
 	setEventHandlers() {
-		this.filterNames.forEach((filterName, i) => {
+		this.filterNames.forEach((filterName) => {
 			const filterElement = document.querySelector('[name="' + filterName + '"]');
 
 			if (filterElement) {
-				filterElement.addEventListener('change', (e) => {
+				filterElement.addEventListener('change', () => {
 					this.updateFilters({
 						name: filterName,
 						value: this.getFilterValue(filterName)
@@ -218,7 +218,7 @@ class FilterList {
 	//public method for changing filters
 	setFilters(filters) {
 		for (let property in filters) {
-			this.filters.forEach(function(item, i) {
+			this.filters.forEach(function(item) {
 				if (item.name === property) {
 					item.value = filters[property];
 				}
@@ -249,7 +249,7 @@ class FilterList {
 		[...listItems].forEach((element) => {
 			let matched = true;
 
-			this.filters.forEach(function(filter, i) {
+			this.filters.forEach(function(filter) {
 				if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
 					//any list item that doesn't have attribute for this filter or
 					//has attribute for this filter with another value should
@@ -311,3 +311,4 @@ class FilterList {
 return FilterList;
 
 }());
+//# sourceMappingURL=filterList.js.map

@@ -109,7 +109,7 @@ var FilterList = function () {
 			value: function setDefaultFilters(filterNames) {
 				var _this = this;
 
-				filterNames.forEach(function (filterName, i) {
+				filterNames.forEach(function (filterName) {
 					var ignoreValue = _this.getFilterIgnoreValue(filterName);
 					var filterValue = _this.getFilterValue(filterName);
 
@@ -159,7 +159,7 @@ var FilterList = function () {
 			value: function updateFiltersfromURL() {
 				var _this2 = this;
 
-				this.filterNames.forEach(function (filterName, i) {
+				this.filterNames.forEach(function (filterName) {
 					var newValue = getUrlParameter(filterName);
 
 					if (newValue) {
@@ -191,11 +191,11 @@ var FilterList = function () {
 			value: function setEventHandlers() {
 				var _this3 = this;
 
-				this.filterNames.forEach(function (filterName, i) {
+				this.filterNames.forEach(function (filterName) {
 					var filterElement = document.querySelector('[name="' + filterName + '"]');
 
 					if (filterElement) {
-						filterElement.addEventListener('change', function (e) {
+						filterElement.addEventListener('change', function () {
 							_this3.updateFilters({
 								name: filterName,
 								value: _this3.getFilterValue(filterName)
@@ -250,7 +250,7 @@ var FilterList = function () {
 				var _this4 = this;
 
 				var _loop = function _loop(property) {
-					_this4.filters.forEach(function (item, i) {
+					_this4.filters.forEach(function (item) {
 						if (item.name === property) {
 							item.value = filters[property];
 						}
@@ -288,7 +288,7 @@ var FilterList = function () {
 				[].concat(_toConsumableArray(listItems)).forEach(function (element) {
 					var matched = true;
 
-					_this5.filters.forEach(function (filter, i) {
+					_this5.filters.forEach(function (filter) {
 						if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
 							//any list item that doesn't have attribute for this filter or
 							//has attribute for this filter with another value should
@@ -355,4 +355,5 @@ var FilterList = function () {
 
 	return FilterList;
 }();
+//# sourceMappingURL=filterList.js.map
 //# sourceMappingURL=filterList.js.map
