@@ -8,9 +8,11 @@
  * Licensed under the MIT License
  */
 
+import {getUrlParameter, updateQueryStringParameter, removeURLParameter} from './utils.js';
+
 'use strict';
 
-class FilterList {
+export default class FilterList {
 	constructor(options) {
 		this.urlIsUpdatable = (options.urlIsUpdatable === undefined) ? false : options.urlIsUpdatable;
 		this.element = options.element;
@@ -89,7 +91,7 @@ class FilterList {
 
 	updateFiltersfromURL() {
 		this.filterNames.forEach((filterName, i) => {
-			const newValue = this.getUrlParameter(filterName);
+			const newValue = getUrlParameter(filterName);
 
 			if (newValue) {
 				this.updateFilters({
@@ -246,62 +248,13 @@ class FilterList {
 
 			this.filters.forEach((filter) => {
 				if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
-					this.url = this.updateQueryStringParameter(this.url, filter.name, filter.value);
+					this.url = updateQueryStringParameter(this.url, filter.name, filter.value);
 				} else {
-					this.url = this.removeURLParameter(this.url, filter.name);
+					this.url = removeURLParameter(this.url, filter.name);
 				}
 			});
 
 			history.pushState(state, document.title, this.url);
 		}
-	}
-
-	//http://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
-	getUrlParameter(sParam) {
-		var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-			sURLVariables = sPageURL.split('&'),
-			sParameterName,
-			i;
-
-		for (i = 0; i < sURLVariables.length; i++) {
-			sParameterName = sURLVariables[i].split('=');
-
-			if (sParameterName[0] === sParam) {
-				return sParameterName[1] === undefined ? true : sParameterName[1];
-			}
-		}
-	}
-
-	updateQueryStringParameter(uri, key, value) {
-		var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-		var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-
-		if (uri.match(re)) {
-			return uri.replace(re, '$1' + key + "=" + value + '$2');
-		} else {
-			return uri + separator + key + "=" + value;
-		}
-	}
-
-	removeURLParameter(url, parameter) {
-	    //prefer to use l.search if you have a location/link object
-	    var urlparts= url.split('?');
-	    if (urlparts.length >= 2) {
-	        var prefix= encodeURIComponent(parameter)+'=';
-	        var pars= urlparts[1].split(/[&;]/g);
-
-	        //reverse iteration as may be destructive
-	        for (var i= pars.length; i-- > 0;) {
-	            //idiom for string.startsWith
-	            if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-	                pars.splice(i, 1);
-	            }
-	        }
-
-	        url= urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
-	        return url;
-	    } else {
-	        return url;
-	    }
 	}
 }

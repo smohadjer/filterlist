@@ -8,6 +8,9 @@ const gulp = require('gulp'),
 	sourcemaps = require('gulp-sourcemaps'),
 	del = require('del');
 
+	var rollup = require('rollup-stream');
+	var source = require('vinyl-source-stream');
+
 gulp.task('clean:dist', function () {
 	return del([
 		'./dist/**/*'
@@ -15,17 +18,28 @@ gulp.task('clean:dist', function () {
 });
 
 gulp.task('babel', () =>
-	gulp.src('src/*.js')
+	gulp.src('dist/filterList.js')
 		.pipe(sourcemaps.init())
 		.pipe(babel({
 				presets: ['env']
 			}))
 		.pipe(sourcemaps.write('.'))
+		.pipe(rename({ suffix: '.es5' }))
 		.pipe(gulp.dest('dist'))
 );
 
+gulp.task('rollup', function() {
+	return rollup({
+		entry: 'src/filterList.js',
+		format: 'iife',
+		name: 'FilterList'
+	})
+	.pipe(source('filterList.js'))
+	.pipe(gulp.dest('./dist'));
+});
+
 gulp.task('compress', () => {
-	gulp.src('dist/*.js')
+	gulp.src('dist/*.es5.js')
 		.pipe(uglify())
 		.pipe(rename({ suffix: '.min' }))
 		.pipe(gulp.dest('dist'))
@@ -33,13 +47,13 @@ gulp.task('compress', () => {
 
 gulp.task('watches6', () => {
 	watch('src/*.js', batch(function (events, done) {
-		gulp.start('babel', done);
+		gulp.start('rollup', done);
 	}));
 });
 
 gulp.task('serve', function(callback) {
 	runSequence(
-		['babel'],
+		['rollup'],
 		['watches6'],
 		callback);
 });
@@ -47,6 +61,7 @@ gulp.task('serve', function(callback) {
 gulp.task('build', function(callback) {
 	runSequence(
 		['clean:dist'],
+		['rollup'],
 		['babel'],
 		['compress'],
 		callback);
