@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
 			/******** required styles ***********/
-			.myList .item--hidden {
+			.myList .hiddenItem {
 				display: none;
 			}
 
@@ -34,7 +34,7 @@
 				display: block;
 			}
 
-			.last-visible-item {
+			.lastVisible {
 				background: yellow;
 			}
 		</style>
@@ -85,17 +85,20 @@
 			<span data-filter-continent="sa">Uruguay</span>
 		</div>
 		<p class="no-results">No results found!</p>
+
 		<script src="../dist/filterList.js"></script>
 		<script>
-			var filter = new FilterList({
+			const filter = new FilterList({
 				element: document.querySelector('.myList'),
 				urlIsUpdatable: true,
-				lastClass: 'last-visible-item',
-				hiddenClass: 'item--hidden',
+				lastClass: 'lastVisible',
+				hiddenClass: 'hiddenItem',
 
-				//is invoked after class is initialized
+				//is invoked after script is initialized
 				initCallback: function() {
 					//console.log('initCallback', this);
+
+					//set handler for reset button
 					document.querySelector('button.js-reset').addEventListener('click', () => {
 						this.setFilters({
 							'continent': 'all',
