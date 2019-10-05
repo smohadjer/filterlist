@@ -1,6 +1,10 @@
-{
+// rollup.config.js
+
+export default {
 	input: 'src/filterList.js',
-	format: 'iife',
-	name: 'FilterList',
-	sourcemap: true
-}
+	output: {
+		file: 'filterList.js',
+		format: 'iife',
+		sourcemap: true
+	}
+};

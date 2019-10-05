@@ -1,359 +1,361 @@
-'use strict';
+"use strict";
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 var FilterList = function () {
-	'use strict';
+  'use strict';
 
-	function getUrlParameter(sParam) {
-		var sPageURL = decodeURIComponent(window.location.search.substring(1)),
-		    sURLVariables = sPageURL.split('&'),
-		    sParameterName,
-		    i;
+  function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
 
-		for (i = 0; i < sURLVariables.length; i++) {
-			sParameterName = sURLVariables[i].split('=');
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
 
-			if (sParameterName[0] === sParam) {
-				return sParameterName[1] === undefined ? true : sParameterName[1];
-			}
-		}
-	}
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : sParameterName[1];
+      }
+    }
+  }
 
-	function updateQueryStringParameter(uri, key, value) {
-		var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-		var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+  function updateQueryStringParameter(uri, key, value) {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
 
-		if (uri.match(re)) {
-			return uri.replace(re, '$1' + key + "=" + value + '$2');
-		} else {
-			return uri + separator + key + "=" + value;
-		}
-	}
+    if (uri.match(re)) {
+      return uri.replace(re, '$1' + key + "=" + value + '$2');
+    } else {
+      return uri + separator + key + "=" + value;
+    }
+  }
 
-	function removeURLParameter(url, parameter) {
-		//prefer to use l.search if you have a location/link object
-		var urlparts = url.split('?');
-		if (urlparts.length >= 2) {
-			var prefix = encodeURIComponent(parameter) + '=';
-			var pars = urlparts[1].split(/[&;]/g);
+  function removeURLParameter(url, parameter) {
+    //prefer to use l.search if you have a location/link object
+    var urlparts = url.split('?');
 
-			//reverse iteration as may be destructive
-			for (var i = pars.length; i-- > 0;) {
-				//idiom for string.startsWith
-				if (pars[i].lastIndexOf(prefix, 0) !== -1) {
-					pars.splice(i, 1);
-				}
-			}
+    if (urlparts.length >= 2) {
+      var prefix = encodeURIComponent(parameter) + '=';
+      var pars = urlparts[1].split(/[&;]/g); //reverse iteration as may be destructive
 
-			url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
-			return url;
-		} else {
-			return url;
-		}
-	}
+      for (var i = pars.length; i-- > 0;) {
+        //idiom for string.startsWith
+        if (pars[i].lastIndexOf(prefix, 0) !== -1) {
+          pars.splice(i, 1);
+        }
+      }
 
-	/*
-  * @name          filterList.js
-  * @version       3.1.0
-  * @lastmodified  2018-02-06
-  * @author        Saeid Mohadjer
-  * @repo		  https://github.com/smohadjer/filterList
-  *
-  * Licensed under the MIT License
-  */
+      url = urlparts[0] + (pars.length > 0 ? '?' + pars.join('&') : "");
+      return url;
+    } else {
+      return url;
+    }
+  }
+  /*
+   * @name          filterList.js
+   * @version       3.1.0
+   * @lastmodified  2018-02-06
+   * @author        Saeid Mohadjer
+   * @repo		  https://github.com/smohadjer/filterList
+   *
+   * Licensed under the MIT License
+   */
 
-	'use strict';
 
-	var FilterList = function () {
-		function FilterList(options) {
-			_classCallCheck(this, FilterList);
+  'use strict';
 
-			this.urlIsUpdatable = options.urlIsUpdatable === undefined ? false : options.urlIsUpdatable;
-			this.element = options.element;
-			this.filters = [];
-			this.filterNames = this.element.getAttribute('data-filter-names').split(' ');
-			this.initCallback = options.initCallback;
-			this.filtersCallback = options.filtersCallback;
-			this.url = window.location.href;
-			this.lastClass = options.lastClass || 'last';
-			this.hiddenClass = options.hiddenClass || 'hidden';
+  var FilterList =
+  /*#__PURE__*/
+  function () {
+    function FilterList(options) {
+      _classCallCheck(this, FilterList);
 
-			this.setEventHandlers();
-			this.setDefaultFilters(this.filterNames);
-			this.updateFiltersfromURL();
-			this.updateBrowserHistory();
+      this.urlIsUpdatable = options.urlIsUpdatable === undefined ? false : options.urlIsUpdatable;
+      this.element = options.element;
+      this.filters = [];
+      this.filterNames = this.element.getAttribute('data-filter-names').split(' ');
+      this.initCallback = options.initCallback;
+      this.filtersCallback = options.filtersCallback;
+      this.url = window.location.href;
+      this.lastClass = options.lastClass || 'last';
+      this.hiddenClass = options.hiddenClass || 'hidden';
+      this.setEventHandlers();
+      this.setDefaultFilters(this.filterNames);
+      this.updateFiltersfromURL();
+      this.updateBrowserHistory();
 
-			if (typeof this.initCallback === 'function') {
-				this.initCallback();
-			}
+      if (typeof this.initCallback === 'function') {
+        this.initCallback();
+      }
 
-			this.applyFilters();
-		}
+      this.applyFilters();
+    }
 
-		_createClass(FilterList, [{
-			key: 'updateBrowserHistory',
-			value: function updateBrowserHistory() {
-				if (this.urlIsUpdatable && window.history && window.history.pushState) {
-					var state = {};
-					state.filters = this.filters.slice();
-					history.replaceState(state, document.title, this.url);
-				}
-			}
-		}, {
-			key: 'setDefaultFilters',
-			value: function setDefaultFilters(filterNames) {
-				var _this = this;
+    _createClass(FilterList, [{
+      key: "updateBrowserHistory",
+      value: function updateBrowserHistory() {
+        if (this.urlIsUpdatable && window.history && window.history.pushState) {
+          var state = {};
+          state.filters = this.filters.slice();
+          history.replaceState(state, document.title, this.url);
+        }
+      }
+    }, {
+      key: "setDefaultFilters",
+      value: function setDefaultFilters(filterNames) {
+        var _this = this;
 
-				filterNames.forEach(function (filterName) {
-					var ignoreValue = _this.getFilterIgnoreValue(filterName);
-					var filterValue = _this.getFilterValue(filterName);
+        filterNames.forEach(function (filterName) {
+          var ignoreValue = _this.getFilterIgnoreValue(filterName);
 
-					_this.filters.push({
-						name: filterName,
-						value: filterValue,
-						ignoreValue: ignoreValue
-					});
-				});
-			}
-		}, {
-			key: 'getFilterIgnoreValue',
-			value: function getFilterIgnoreValue(filterName) {
-				var filterElement = document.querySelector('[name="' + filterName + '"]');
-				var ignoreValue = void 0;
+          var filterValue = _this.getFilterValue(filterName);
 
-				if (filterElement) {
-					if (filterElement.tagName === 'SELECT') {
-						ignoreValue = filterElement.getAttribute('data-ignore');
-					}
-				} else {
-					console.warn('No filter with name ' + filterName + ' was found in markup!');
-				}
+          _this.filters.push({
+            name: filterName,
+            value: filterValue,
+            ignoreValue: ignoreValue
+          });
+        });
+      }
+    }, {
+      key: "getFilterIgnoreValue",
+      value: function getFilterIgnoreValue(filterName) {
+        var filterElement = document.querySelector("[name=\"" + filterName + "\"]");
+        var ignoreValue = void 0;
 
-				return ignoreValue;
-			}
-		}, {
-			key: 'getFilterValue',
-			value: function getFilterValue(filterName) {
-				var filterElement = document.querySelector('[name="' + filterName + '"]');
-				var filterValue = void 0;
+        if (filterElement) {
+          if (filterElement.tagName === 'SELECT') {
+            ignoreValue = filterElement.getAttribute('data-ignore');
+          }
+        } else {
+          console.warn('No filter with name ' + filterName + ' was found in markup!');
+        }
 
-				if (filterElement) {
-					if (filterElement.getAttribute('type') === 'checkbox') {
-						filterValue = filterElement.checked ? filterElement.value : undefined;
-					} else {
-						filterValue = filterElement.value;
-					}
-				} else {
-					console.warn('No filter with name ' + filterName + ' was found in markup!');
-				}
+        return ignoreValue;
+      }
+    }, {
+      key: "getFilterValue",
+      value: function getFilterValue(filterName) {
+        var filterElement = document.querySelector("[name=\"" + filterName + "\"]");
+        var filterValue = void 0;
 
-				return filterValue;
-			}
-		}, {
-			key: 'updateFiltersfromURL',
-			value: function updateFiltersfromURL() {
-				var _this2 = this;
+        if (filterElement) {
+          if (filterElement.getAttribute('type') === 'checkbox') {
+            filterValue = filterElement.checked ? filterElement.value : undefined;
+          } else {
+            filterValue = filterElement.value;
+          }
+        } else {
+          console.warn('No filter with name ' + filterName + ' was found in markup!');
+        }
 
-				this.filterNames.forEach(function (filterName) {
-					var newValue = getUrlParameter(filterName);
+        return filterValue;
+      }
+    }, {
+      key: "updateFiltersfromURL",
+      value: function updateFiltersfromURL() {
+        var _this2 = this;
 
-					if (newValue) {
-						_this2.updateFilters({
-							name: filterName,
-							value: newValue
-						}, true);
-					}
-				});
-			}
-		}, {
-			key: 'updateFilters',
-			value: function updateFilters(updatedFilter, triggerEvent) {
-				var filter = this.filters.find(function (filter) {
-					return filter.name === updatedFilter.name;
-				});
+        this.filterNames.forEach(function (filterName) {
+          var newValue = getUrlParameter(filterName);
 
-				if (filter && filter.value !== updatedFilter.value) {
-					filter.value = updatedFilter.value;
-					this.applyFilters();
+          if (newValue) {
+            _this2.updateFilters({
+              name: filterName,
+              value: newValue
+            }, true);
+          }
+        });
+      }
+    }, {
+      key: "updateFilters",
+      value: function updateFilters(updatedFilter, triggerEvent) {
+        var filter = this.filters.find(function (filter) {
+          return filter.name === updatedFilter.name;
+        });
 
-					if (triggerEvent) {
-						this.updateDOM([filter]);
-					}
-				}
-			}
-		}, {
-			key: 'setEventHandlers',
-			value: function setEventHandlers() {
-				var _this3 = this;
+        if (filter && filter.value !== updatedFilter.value) {
+          filter.value = updatedFilter.value;
+          this.applyFilters();
 
-				this.filterNames.forEach(function (filterName) {
-					var filterElement = document.querySelector('[name="' + filterName + '"]');
+          if (triggerEvent) {
+            this.updateDOM([filter]);
+          }
+        }
+      }
+    }, {
+      key: "setEventHandlers",
+      value: function setEventHandlers() {
+        var _this3 = this;
 
-					if (filterElement) {
-						filterElement.addEventListener('change', function () {
-							_this3.updateFilters({
-								name: filterName,
-								value: _this3.getFilterValue(filterName)
-							});
+        this.filterNames.forEach(function (filterName) {
+          var filterElement = document.querySelector('[name="' + filterName + '"]');
 
-							if (_this3.urlIsUpdatable) {
-								_this3.updateURL();
-							}
-						});
-					}
-				});
+          if (filterElement) {
+            filterElement.addEventListener('change', function () {
+              _this3.updateFilters({
+                name: filterName,
+                value: _this3.getFilterValue(filterName)
+              });
 
-				if (this.urlIsUpdatable && window.history && window.history.pushState) {
-					window.addEventListener("popstate", function (e) {
-						if (e.state.filters) {
-							for (var prop in e.state.filters) {
-								_this3.filters[prop] = e.state.filters[prop];
-							}
+              if (_this3.urlIsUpdatable) {
+                _this3.updateURL();
+              }
+            });
+          }
+        });
 
-							_this3.updateDOM(e.state.filters);
-							_this3.applyFilters();
-						}
-					});
-				}
-			}
-		}, {
-			key: 'updateDOM',
-			value: function updateDOM(filtersArray) {
-				for (var i in filtersArray) {
-					var filter = filtersArray[i];
-					var filterElement = document.querySelector('[name="' + filter.name + '"]');
+        if (this.urlIsUpdatable && window.history && window.history.pushState) {
+          window.addEventListener("popstate", function (e) {
+            if (e.state.filters) {
+              for (var prop in e.state.filters) {
+                _this3.filters[prop] = e.state.filters[prop];
+              }
 
-					if (filterElement) {
-						if (filterElement.tagName === 'SELECT') {
-							filterElement.value = filter.value;
-						}
+              _this3.updateDOM(e.state.filters);
 
-						if (filterElement.tagName === 'INPUT') {
-							if (filterElement.getAttribute('type') === 'checkbox') {
-								filterElement.checked = filterElement.value === filter.value ? true : false;
-							}
-						}
-					}
-				}
-			}
+              _this3.applyFilters();
+            }
+          });
+        }
+      }
+    }, {
+      key: "updateDOM",
+      value: function updateDOM(filtersArray) {
+        for (var i in filtersArray) {
+          var filter = filtersArray[i];
+          var filterElement = document.querySelector("[name=\"" + filter.name + "\"]");
 
-			//public method for changing filters
+          if (filterElement) {
+            if (filterElement.tagName === 'SELECT') {
+              filterElement.value = filter.value;
+            }
 
-		}, {
-			key: 'setFilters',
-			value: function setFilters(filters) {
-				var _this4 = this;
+            if (filterElement.tagName === 'INPUT') {
+              if (filterElement.getAttribute('type') === 'checkbox') {
+                filterElement.checked = filterElement.value === filter.value ? true : false;
+              }
+            }
+          }
+        }
+      } //public method for changing filters
 
-				var _loop = function _loop(property) {
-					_this4.filters.forEach(function (item) {
-						if (item.name === property) {
-							item.value = filters[property];
-						}
-					});
-				};
+    }, {
+      key: "setFilters",
+      value: function setFilters(filters) {
+        var _loop = function _loop(property) {
+          this.filters.forEach(function (item) {
+            if (item.name === property) {
+              item.value = filters[property];
+            }
+          });
+        };
 
-				for (var property in filters) {
-					_loop(property);
-				}
+        for (var property in filters) {
+          _loop(property);
+        }
 
-				this.updateDOM(this.filters);
-				this.applyFilters();
+        this.updateDOM(this.filters);
+        this.applyFilters();
 
-				if (this.urlIsUpdatable) {
-					this.updateURL();
-				}
-			}
-		}, {
-			key: 'applyFilters',
-			value: function applyFilters() {
-				var _this5 = this;
+        if (this.urlIsUpdatable) {
+          this.updateURL();
+        }
+      }
+    }, {
+      key: "applyFilters",
+      value: function applyFilters() {
+        var _this4 = this;
 
-				var matchedItems = [];
-				var listItems = this.element.children;
+        var matchedItems = [];
+        var listItems = this.element.children;
 
-				if (this.lastClass) {
-					var lastVisibleElement = this.element.querySelector('.' + this.lastClass);
-					if (lastVisibleElement) {
-						lastVisibleElement.classList.remove(this.lastClass);
-					}
-				}
+        if (this.lastClass) {
+          var lastVisibleElement = this.element.querySelector("." + this.lastClass);
 
-				// If filters are set, only items whose data attributes
-				//match all the set filters would show
-				[].concat(_toConsumableArray(listItems)).forEach(function (element) {
-					var matched = true;
+          if (lastVisibleElement) {
+            lastVisibleElement.classList.remove(this.lastClass);
+          }
+        } // If filters are set, only items whose data attributes
+        //match all the set filters would show
 
-					_this5.filters.forEach(function (filter) {
-						if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
-							//any list item that doesn't have attribute for this filter or
-							//has attribute for this filter with another value should
-							//be filtered out.
-							if (!element.hasAttribute('data-filter-' + filter.name) || element.getAttribute('data-filter-' + filter.name) !== filter.value) {
-								matched = false;
-								return false;
-							}
-						}
-					});
 
-					if (matched) {
-						matchedItems.push(element);
-					}
-				});
+        [].concat(_toConsumableArray(listItems)).forEach(function (element) {
+          var matched = true;
 
-				[].concat(_toConsumableArray(listItems)).forEach(function (el) {
-					el.classList.add(_this5.hiddenClass);
-				});
+          _this4.filters.forEach(function (filter) {
+            if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
+              //any list item that doesn't have attribute for this filter or
+              //has attribute for this filter with another value should
+              //be filtered out.
+              if (!element.hasAttribute('data-filter-' + filter.name) || element.getAttribute('data-filter-' + filter.name) !== filter.value) {
+                matched = false;
+                return false;
+              }
+            }
+          });
 
-				if (matchedItems.length !== 0) {
-					matchedItems.forEach(function (item, i) {
-						item.classList.remove(_this5.hiddenClass);
+          if (matched) {
+            matchedItems.push(element);
+          }
+        });
+        [].concat(_toConsumableArray(listItems)).forEach(function (el) {
+          el.classList.add(_this4.hiddenClass);
+        });
 
-						//add a class to last visible item in the list in case last item in list needs special styling
-						if (_this5.lastClass && i === matchedItems.length - 1) {
-							item.classList.add(_this5.lastClass);
-						}
-					});
+        if (matchedItems.length !== 0) {
+          matchedItems.forEach(function (item, i) {
+            item.classList.remove(_this4.hiddenClass); //add a class to last visible item in the list in case last item in list needs special styling
 
-					this.element.classList.remove('is-empty');
-				} else {
-					this.element.classList.add('is-empty');
-				}
+            if (_this4.lastClass && i === matchedItems.length - 1) {
+              item.classList.add(_this4.lastClass);
+            }
+          });
+          this.element.classList.remove('is-empty');
+        } else {
+          this.element.classList.add('is-empty');
+        }
 
-				if (typeof this.filtersCallback === 'function') {
-					this.filtersCallback();
-				}
-			}
-		}, {
-			key: 'updateURL',
-			value: function updateURL() {
-				var _this6 = this;
+        if (typeof this.filtersCallback === 'function') {
+          this.filtersCallback();
+        }
+      }
+    }, {
+      key: "updateURL",
+      value: function updateURL() {
+        var _this5 = this;
 
-				if (window.history && window.history.pushState) {
-					var state = {};
-					state.filters = Object.assign({}, this.filters);
+        if (window.history && window.history.pushState) {
+          var state = {};
+          state.filters = Object.assign({}, this.filters);
+          this.filters.forEach(function (filter) {
+            if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
+              _this5.url = updateQueryStringParameter(_this5.url, filter.name, filter.value);
+            } else {
+              _this5.url = removeURLParameter(_this5.url, filter.name);
+            }
+          });
+          history.pushState(state, document.title, this.url);
+        }
+      }
+    }]);
 
-					this.filters.forEach(function (filter) {
-						if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
-							_this6.url = updateQueryStringParameter(_this6.url, filter.name, filter.value);
-						} else {
-							_this6.url = removeURLParameter(_this6.url, filter.name);
-						}
-					});
+    return FilterList;
+  }();
 
-					history.pushState(state, document.title, this.url);
-				}
-			}
-		}]);
-
-		return FilterList;
-	}();
-
-	return FilterList;
+  return FilterList;
 }();
-//# sourceMappingURL=filterList.js.map
 //# sourceMappingURL=filterList.js.map
