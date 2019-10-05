@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Demo for filterList.js</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			/******** required styles ***********/
+			.myList .hiddenItem {
+				display: none;
+			}
+
+			/********* optional styles **********/
+			.filters {
+				background: #ccc;
+				padding: 20px;
+				margin-bottom: 20px;
+			}
+
+			select, label {
+				margin-right: 20px;
+			}
+
+			.myList tr {
+				display: table-row;
+			}
+
+		 	.no-results {
+				display: none;
+			}
+
+			.is-empty + .no-results {
+				display: block;
+			}
+
+			.lastVisible {
+				background: yellow;
+			}
+
+			td, th {
+				text-align: left;
+				border-bottom: solid 1px #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>Filter Countries by continent or GDP</h2>
+		<section class="filters">
+			<select name="continent" data-ignore="all">
+				<option value="all">Filter by continent</option>
+				<option value="asia">Asia</option>
+				<option value="africa">Africa</option>
+				<option value="eu">Europe</option>
+				<option value="na">North America</option>
+				<option value="sa">South America</option>
+			</select>
+			<label>
+				<input type="checkbox" name="gdp" value="high" />
+				Show rich countries!
+			</label>
+			<button class="js-reset">Reset Filters</button>
+		</section>
+		<table class="myList" data-filter-names="continent gdp">
+			<tr class="no-filtering"><th>Countries</th></tr>
+			<tr data-filter-continent="asia"><td>Afghanistan</td></tr>
+			<tr data-filter-continent="asia"><td>Bangladesh</td></tr>
+			<tr data-filter-continent="asia" data-filter-gdp="high"><td>Singapore</td></tr>
+			<tr data-filter-continent="asia" data-filter-gdp="high"><td>Qatar</td></tr>
+			<tr data-filter-continent="asia"><td>Japan</td></tr>
+			<tr data-filter-continent="asia"><td>Nepal</td></tr>
+			<tr data-filter-continent="africa"><td>Algeria</td></tr>
+			<tr data-filter-continent="africa"><td>Angola</td></tr>
+			<tr data-filter-continent="africa"><td>Burkina</td></tr>
+			<tr data-filter-continent="africa"><td>Burundi</td></tr>
+			<tr data-filter-continent="africa"><td>Cameroon</td></tr>
+			<tr data-filter-continent="africa"><td>Chad</td></tr>
+			<tr data-filter-continent="africa"><td>Egypt</td></tr>
+			<tr data-filter-continent="eu"><td>Belarus</td></tr>
+			<tr data-filter-continent="eu" data-filter-gdp="high"><td>Luxembourg</td></tr>
+			<tr data-filter-continent="eu"><td>Denmark</td></tr>
+			<tr data-filter-continent="eu" data-filter-gdp="high"><td>Germany</td></tr>
+			<tr data-filter-continent="eu"><td>France</td></tr>
+			<tr data-filter-continent="eu"><td>Italy</td></tr>
+			<tr data-filter-continent="na"><td>Bahamas</td></tr>
+			<tr data-filter-continent="na" data-filter-gdp="high"><td>Canada</td></tr>
+			<tr data-filter-continent="na" data-filter-gdp="high"><td>United States</td></tr>
+			<tr data-filter-continent="sa"><td>Argentina</td></tr>
+			<tr data-filter-continent="sa"><td>Brazil</td></tr>
+			<tr data-filter-continent="sa"><td>Chile</td></tr>
+			<tr data-filter-continent="sa"><td>Uruguay</td></tr>
+		</table>
+		<p class="no-results">No results found!</p>
+
+		<script type="module">
+			import Filter from './../src/filterList';
+
+			const filter = new Filter({
+				element: document.querySelector('.myList'),
+				urlIsUpdatable: true,
+				lastClass: 'lastVisible',
+				hiddenClass: 'hiddenItem',
+				filterSelector: 'tr',
+				excludeFromFilteringClass: 'no-filtering',
+
+				//is invoked after script is initialized
+				initCallback: function() {
+					//console.log('initCallback', this);
+
+					//set handler for reset button
+					document.querySelector('button.js-reset').addEventListener('click', () => {
+						this.setFilters({
+							'continent': 'all',
+							'gdp': undefined
+						});
+					});
+				},
+
+				//is invoked every time filters are applied
+				filtersCallback: function() {
+					//console.log('filtersCallback', this.filters);
+				}
+			});
+		</script>
+    </body>
+</html>

@@ -23,6 +23,8 @@ export default class FilterList {
 		this.url = window.location.href;
 		this.lastClass = options.lastClass || 'last';
 		this.hiddenClass = options.hiddenClass || 'hidden';
+		this.excludeClass = options.excludeFromFilteringClass || 'filterList__exclude';
+		this.filterSelector = options.filterSelector;
 
 		this.setEventHandlers();
 		this.setDefaultFilters(this.filterNames);
@@ -186,7 +188,21 @@ export default class FilterList {
 
 	applyFilters() {
 		let matchedItems = [];
-		const listItems = this.element.children;
+		let listItems;
+		let newListItems = [];
+
+		if (this.filterSelector) {
+			listItems = this.element.querySelectorAll(this.filterSelector);
+		} else {
+			listItems = this.element.children;
+		}
+
+		//exclude items that shouldn't be filtered
+		for (let item of listItems) {
+			if (!item.classList.contains(this.excludeClass)) {
+				newListItems.push(item);
+			}
+		}
 
 		if (this.lastClass) {
 			let lastVisibleElement = this.element.querySelector(`.${this.lastClass}`);
@@ -197,7 +213,7 @@ export default class FilterList {
 
 		// If filters are set, only items whose data attributes
 		//match all the set filters would show
-		[...listItems].forEach((element) => {
+		[...newListItems].forEach((element) => {
 			let matched = true;
 
 			this.filters.forEach(function(filter) {
@@ -217,7 +233,7 @@ export default class FilterList {
 			}
 		});
 
-		[...listItems].forEach((el) => {
+		[...newListItems].forEach((el) => {
 			el.classList.add(this.hiddenClass);
 		});
 
