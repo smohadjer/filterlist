@@ -1,13 +1,5 @@
 "use strict";
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -92,6 +84,8 @@ var FilterList = function () {
       this.url = window.location.href;
       this.lastClass = options.lastClass || 'last';
       this.hiddenClass = options.hiddenClass || 'hidden';
+      this.excludeClass = options.excludeFromFilteringClass || 'filterList__exclude';
+      this.filterSelector = options.filterSelector;
       this.setEventHandlers();
       this.setDefaultFilters(this.filterNames);
       this.updateFiltersfromURL();
@@ -133,8 +127,8 @@ var FilterList = function () {
     }, {
       key: "getFilterIgnoreValue",
       value: function getFilterIgnoreValue(filterName) {
-        var filterElement = document.querySelector("[name=\"" + filterName + "\"]");
-        var ignoreValue = void 0;
+        var filterElement = document.querySelector("[name=\"".concat(filterName, "\"]"));
+        var ignoreValue;
 
         if (filterElement) {
           if (filterElement.tagName === 'SELECT') {
@@ -149,8 +143,8 @@ var FilterList = function () {
     }, {
       key: "getFilterValue",
       value: function getFilterValue(filterName) {
-        var filterElement = document.querySelector("[name=\"" + filterName + "\"]");
-        var filterValue = void 0;
+        var filterElement = document.querySelector("[name=\"".concat(filterName, "\"]"));
+        var filterValue;
 
         if (filterElement) {
           if (filterElement.getAttribute('type') === 'checkbox') {
@@ -237,7 +231,7 @@ var FilterList = function () {
       value: function updateDOM(filtersArray) {
         for (var i in filtersArray) {
           var filter = filtersArray[i];
-          var filterElement = document.querySelector("[name=\"" + filter.name + "\"]");
+          var filterElement = document.querySelector("[name=\"".concat(filter.name, "\"]"));
 
           if (filterElement) {
             if (filterElement.tagName === 'SELECT') {
@@ -256,8 +250,10 @@ var FilterList = function () {
     }, {
       key: "setFilters",
       value: function setFilters(filters) {
+        var _this4 = this;
+
         var _loop = function _loop(property) {
-          this.filters.forEach(function (item) {
+          _this4.filters.forEach(function (item) {
             if (item.name === property) {
               item.value = filters[property];
             }
@@ -278,13 +274,48 @@ var FilterList = function () {
     }, {
       key: "applyFilters",
       value: function applyFilters() {
-        var _this4 = this;
+        var _this5 = this;
 
         var matchedItems = [];
-        var listItems = this.element.children;
+        var listItems;
+        var newListItems = [];
+
+        if (this.filterSelector) {
+          listItems = this.element.querySelectorAll(this.filterSelector);
+        } else {
+          listItems = this.element.children;
+        } //exclude items that shouldn't be filtered
+
+
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = listItems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var item = _step.value;
+
+            if (!item.classList.contains(this.excludeClass)) {
+              newListItems.push(item);
+            }
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
 
         if (this.lastClass) {
-          var lastVisibleElement = this.element.querySelector("." + this.lastClass);
+          var lastVisibleElement = this.element.querySelector(".".concat(this.lastClass));
 
           if (lastVisibleElement) {
             lastVisibleElement.classList.remove(this.lastClass);
@@ -293,10 +324,10 @@ var FilterList = function () {
         //match all the set filters would show
 
 
-        [].concat(_toConsumableArray(listItems)).forEach(function (element) {
+        [].concat(newListItems).forEach(function (element) {
           var matched = true;
 
-          _this4.filters.forEach(function (filter) {
+          _this5.filters.forEach(function (filter) {
             if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
               //any list item that doesn't have attribute for this filter or
               //has attribute for this filter with another value should
@@ -312,16 +343,16 @@ var FilterList = function () {
             matchedItems.push(element);
           }
         });
-        [].concat(_toConsumableArray(listItems)).forEach(function (el) {
-          el.classList.add(_this4.hiddenClass);
+        [].concat(newListItems).forEach(function (el) {
+          el.classList.add(_this5.hiddenClass);
         });
 
         if (matchedItems.length !== 0) {
           matchedItems.forEach(function (item, i) {
-            item.classList.remove(_this4.hiddenClass); //add a class to last visible item in the list in case last item in list needs special styling
+            item.classList.remove(_this5.hiddenClass); //add a class to last visible item in the list in case last item in list needs special styling
 
-            if (_this4.lastClass && i === matchedItems.length - 1) {
-              item.classList.add(_this4.lastClass);
+            if (_this5.lastClass && i === matchedItems.length - 1) {
+              item.classList.add(_this5.lastClass);
             }
           });
           this.element.classList.remove('is-empty');
@@ -336,16 +367,16 @@ var FilterList = function () {
     }, {
       key: "updateURL",
       value: function updateURL() {
-        var _this5 = this;
+        var _this6 = this;
 
         if (window.history && window.history.pushState) {
           var state = {};
           state.filters = Object.assign({}, this.filters);
           this.filters.forEach(function (filter) {
             if (filter.value !== undefined && filter.value.length !== 0 && filter.value !== filter.ignoreValue) {
-              _this5.url = updateQueryStringParameter(_this5.url, filter.name, filter.value);
+              _this6.url = updateQueryStringParameter(_this6.url, filter.name, filter.value);
             } else {
-              _this5.url = removeURLParameter(_this5.url, filter.name);
+              _this6.url = removeURLParameter(_this6.url, filter.name);
             }
           });
           history.pushState(state, document.title, this.url);

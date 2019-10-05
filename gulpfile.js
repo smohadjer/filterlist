@@ -39,7 +39,7 @@ gulp.task('babel', () =>
 	gulp.src('dist/filterList.js')
 		.pipe(sourcemaps.init())
 		.pipe(babel({
-				presets: ['env']
+				presets: ['@babel/preset-env']
 			}))
 		.pipe(sourcemaps.write('.'))
 		.pipe(rename({ suffix: '.es5' }))
