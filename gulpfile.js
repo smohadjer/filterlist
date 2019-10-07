@@ -2,10 +2,9 @@ const gulp = require('gulp'),
 	babel = require('gulp-babel'),
 	uglify = require('gulp-uglify'),
 	rename = require("gulp-rename"),
-	watch = require('gulp-watch'),
-	batch = require('gulp-batch'),
 	sourcemaps = require('gulp-sourcemaps'),
-	del = require('del');
+	del = require('del'),
+	debug = require('gulp-debug');
 
 	var rollup = require('rollup-stream');
 	var source = require('vinyl-source-stream');
@@ -53,7 +52,9 @@ gulp.task('rollup', function() {
 		name: 'FilterList',
 		sourcemap: true
 	})
+
 		.pipe(source('filterList.js'))
+		.pipe(debug({title: 'DEBUG:'}))
 
 		// buffer the output. most gulp plugins, including gulp-sourcemaps, don't support streams.
 		.pipe(buffer())
@@ -75,14 +76,14 @@ gulp.task('compress', () =>
 );
 
 gulp.task('watch', () => {
-	watch('src/*.js', batch(function (events, done) {
-		gulp.start('rollup', done);
-	}));
+	gulp.watch('src/*.js', gulp.series('rollup', 'babel'));
 });
 
 gulp.task('serve', gulp.series(
+	'clean:dist',
 	'lint',
 	'rollup',
+	'babel',
 	'watch'
 ));
 

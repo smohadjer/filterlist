@@ -85,17 +85,13 @@
 			<span data-filter-continent="sa">Uruguay</span>
 		</div>
 		<p class="no-results">No results found!</p>
-
-		<script type="module">
-			import Filter from './../src/filterList.js';
-
-			const filter = new Filter({
+		<script src="../dist/filterList.es5.js"></script>
+		<script>
+			var filter = new FilterList({
 				element: document.querySelector('.myList'),
 				urlIsUpdatable: true,
 				lastClass: 'lastVisible',
 				hiddenClass: 'hiddenItem',
-				filterSelector: 'span',
-
 
 				//is invoked after script is initialized
 				initCallback: function() {
