@@ -1,0 +1,18 @@
+{
+    "packages": {
+        "smohadjer/filterlist": {
+            "dev-master": { @composer.json },
+            "1.0.x-dev": { @composer.json },
+            "0.0.1": { @composer.json },
+            "1.0.0": { @composer.json }
+        }
+    }
+}
+
+{
+    "name": "smohadjer/filterlist",
+    "version": "3.1.0",
+    "dist": {
+        "url": "https://github.com/smohadjer/filterList/tree/master/dist"
+    }
+}
