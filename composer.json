@@ -1,7 +1,5 @@
 {
     "name": "smohadjer/filterlist",
-    "dist": {
-        "url": "https://github.com/smohadjer/filterList/tree/master/dist",
-        "type": "git"
-    }
+    "description": "Filter arbitrary HTML lists using data attributes",
+    "license": "MIT"
 }
