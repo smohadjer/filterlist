@@ -1,4 +1,8 @@
-filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies. For examples see [demo page](https://smohadjer.github.io/filterList/demo/demo-list-es5.html).
+## Demo
+- https://smohadjer.github.io/filterList/demo/demo-list.html
+- https://smohadjer.github.io/filterList/demo/demo-table.html
+  
+filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in JavaScript and has no dependencies.
 
 ### How to use
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
