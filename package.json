@@ -4,7 +4,8 @@
   "description": "filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies.",
   "main": "src/filterList.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild src/filterList.js --bundle --format=esm --minify --sourcemap --outfile=dist/filterList.min.js"
   },
   "repository": {
     "type": "git",
@@ -17,22 +18,6 @@
   },
   "homepage": "https://github.com/smohadjer/filterList#readme",
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/plugin-transform-classes": "^7.5.5",
-    "@babel/preset-env": "^7.6.2",
-    "del": "^3.0.0",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0-beta.2",
-    "gulp-debug": "^4.0.0",
-    "gulp-eslint": "^4.0.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-rollup": "^2.16.2",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.2",
-    "rollup": "^1.23.1",
-    "rollup-stream": "^1.24.1",
-    "run-sequence": "^1.1.5",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "esbuild": "0.18.20"
   }
 }

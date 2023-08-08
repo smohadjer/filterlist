@@ -91,9 +91,10 @@
 			<tr data-filter-continent="sa"><td>Uruguay</td></tr>
 		</table>
 		<p class="no-results">No results found!</p>
-		<script src="../dist/filterList.es5.js"></script>
-		<script>
-			var filter = new FilterList({
+		<script type="module">
+			import FilterList from '../dist/filterList.min.js';
+
+			const filter = new FilterList({
 				element: document.querySelector('.myList'),
 				urlIsUpdatable: true,
 				lastClass: 'lastVisible',
