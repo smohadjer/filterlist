@@ -1,10 +1,14 @@
+filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters or form elements or by other scripts.
+
 ## Demo
 - https://smohadjer.github.io/filterList/demo/demo-list.html
 - https://smohadjer.github.io/filterList/demo/demo-table.html
-  
-filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in JavaScript and has no dependencies.
 
-### How to use
+## Features
+- The script has no dependencies and requires no CSS.
+- FilterList can update URL without page refresh when filters change by setting option "urlIsUpdatable" to true.
+
+## How to use
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
 ```javascript
 <script type="module">
@@ -18,11 +22,7 @@ filterList.js allows filtering of any HTML list or group of elements via data at
 - List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue”`.
 - Use `data-ignore="ignoreValue"` on form elements such as "Select" to specify value that should be taken into account during filtering, for example an "all" value in dropdown list.
 
-### Features
-- The script has no javascript dependencies and no CSS.
-- FilterList can update URL when filters change by setting option "urlIsUpdatable" to true.
-
-### Options
+## Options
 - **element: document.getElementById('myList')**<br />
 This is the only required option.
 
@@ -41,6 +41,6 @@ This callback function is invoked as soon as FilterList is initialised.
 - **filtersCallback: function() { console.log(this); }**<br />
 This callback function is invoked every time filters are applied.
 
-### Public methods
+## Public methods
 - **setFilter({filtername: filtervalue})**<br />
 Use this method to change a filter's value from javascript. For example you may want to add a button to your page that once clicked, it resets all filters to their initial value. For usage example see the demo page.
