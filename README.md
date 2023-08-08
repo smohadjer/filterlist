@@ -3,10 +3,12 @@ filterList.js allows filtering of any HTML list or group of elements via data at
 ### How to use
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
 ```javascript
-<script src="path/to/script/filterList.js"></script>
-var myFilter = new FilterList({
-	element: document.querySelector('.myFilterableList')
-});
+<script type="module">
+  import FilterList from 'path/to/script/filterList.js';
+  const myFilter = new FilterList({
+    element: document.querySelector('.myFilterableList')
+  });
+</script>
 ```
 - Name of filters should be set on the list's parent element using data attribute with the syntax `data-filters-name=“filtername1 filtername2”`.
 - List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue”`.
