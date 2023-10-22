@@ -1,14 +1,14 @@
-FilterList is a zero-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data-attributes to them. Filtering can be triggered via URL parameters, or form elements in markup, or programmatically via javascript.
+FilterList is a small (4kb) zero-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data attributes to them. Filtering can be triggered via URL parameters, or form elements in markup, or programmatically via a script. For example you can use it to filter posts on a blog based on tags.
 
 ## Demo
-- https://smohadjer.github.io/filterList/demo/demo-list.html
-- https://smohadjer.github.io/filterList/demo/demo-table.html
+- [Filtering span elements inside a div](https://smohadjer.github.io/filterList/demo/demo-list.html)
+- [Filtering rows in a table](https://smohadjer.github.io/filterList/demo/demo-table.html)
 
 ## Features
-- The script has no dependencies and requires no CSS.
-- FilterList can update URL without page refresh when filters change by setting option "urlIsUpdatable" to true.
+- FilterList has no dependencies and requires no CSS to work
+- FilterList can update URL address bar without page refresh
 
-## How to use
+## Usage
 - Add script to the bottom of your page before closing body tag and then initialise "FilterList" class:
 ```javascript
 <script type="module">
