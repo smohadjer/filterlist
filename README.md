@@ -1,4 +1,4 @@
-filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters or form elements or by other scripts.
+FilterList is a zero-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data-attributes to them. Filtering can be triggered via URL parameters, or form elements in markup, or programmatically via javascript.
 
 ## Demo
 - https://smohadjer.github.io/filterList/demo/demo-list.html
