@@ -3,6 +3,7 @@ FilterList is a small (4kb) zero-dependency JavaScript library that allows you t
 ## Demo
 - [Filtering span elements inside a div](https://smohadjer.github.io/filterList/demo/demo-list.html)
 - [Filtering rows in a table](https://smohadjer.github.io/filterList/demo/demo-table.html)
+- [Filtering posts in a blog using tags](https://saeidmohadjer.com/blog)
 
 ## Features
 - FilterList has no dependencies and requires no CSS to work
