@@ -19,7 +19,7 @@ filterList.js allows filtering of any HTML list or group of elements via data at
 </script>
 ```
 - Name of filters should be set on the list's parent element using data attribute with the syntax `data-filters-name=“filtername1 filtername2”`.
-- List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue”`.
+- List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue”`. If an item has multiple values for a certain filter separate them by space: `data-filter-filtername=“filtervalue1 filtervalue2”`.
 - Use `data-ignore="ignoreValue"` on form elements such as "Select" to specify value that should be taken into account during filtering, for example an "all" value in dropdown list.
 
 ## Options

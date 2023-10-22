@@ -45,8 +45,15 @@
 		</style>
 	</head>
 	<body>
-		<h2>Filter Countries by continent or GDP</h2>
+		<h2>Filter Countries by language, continent or GDP</h2>
 		<section class="filters">
+			<select name="lang" data-ignore="all">
+				<option value="all">Filter by language</option>
+				<option value="en">English</option>
+				<option value="fr">French</option>
+				<option value="de">German</option>
+				<option value="it">Italian</option>
+			</select>
 			<select name="continent" data-ignore="all">
 				<option value="all">Filter by continent</option>
 				<option value="asia">Asia</option>
@@ -61,7 +68,7 @@
 			</label>
 			<button class="js-reset">Reset Filters</button>
 		</section>
-		<table class="myList" data-filter-names="continent gdp">
+		<table class="myList" data-filter-names="continent gdp lang">
 			<tr class="no-filtering"><th>Countries</th></tr>
 			<tr data-filter-continent="asia"><td>Afghanistan</td></tr>
 			<tr data-filter-continent="asia"><td>Bangladesh</td></tr>
@@ -79,12 +86,13 @@
 			<tr data-filter-continent="eu"><td>Belarus</td></tr>
 			<tr data-filter-continent="eu" data-filter-gdp="high"><td>Luxembourg</td></tr>
 			<tr data-filter-continent="eu"><td>Denmark</td></tr>
-			<tr data-filter-continent="eu" data-filter-gdp="high"><td>Germany</td></tr>
-			<tr data-filter-continent="eu"><td>France</td></tr>
-			<tr data-filter-continent="eu"><td>Italy</td></tr>
+			<tr data-filter-lang="de" data-filter-continent="eu" data-filter-gdp="high"><td>Germany</td></tr>
+			<tr data-filter-lang="fr" data-filter-continent="eu" data-filter-gdp="high"><td>France</td></tr>
+			<tr data-filter-lang="it fr de" data-filter-continent="eu" data-filter-gdp="high"><td>Switzerland</td></tr>
+			<tr data-filter-lang="it" data-filter-continent="eu"><td>Italy</td></tr>
 			<tr data-filter-continent="na"><td>Bahamas</td></tr>
-			<tr data-filter-continent="na" data-filter-gdp="high"><td>Canada</td></tr>
-			<tr data-filter-continent="na" data-filter-gdp="high"><td>United States</td></tr>
+			<tr data-filter-lang="en fr" data-filter-continent="na" data-filter-gdp="high"><td>Canada</td></tr>
+			<tr data-filter-lang="en" data-filter-continent="na" data-filter-gdp="high"><td>United States</td></tr>
 			<tr data-filter-continent="sa"><td>Argentina</td></tr>
 			<tr data-filter-continent="sa"><td>Brazil</td></tr>
 			<tr data-filter-continent="sa"><td>Chile</td></tr>
@@ -92,7 +100,7 @@
 		</table>
 		<p class="no-results">No results found!</p>
 		<script type="module">
-			import FilterList from '../dist/filterList.min.js';
+			import FilterList from '../src/filterList.js';
 
 			const filter = new FilterList({
 				element: document.querySelector('.myList'),
@@ -110,7 +118,8 @@
 					document.querySelector('button.js-reset').addEventListener('click', () => {
 						this.setFilters({
 							'continent': 'all',
-							'gdp': undefined
+							'gdp': undefined,
+							'lang': 'all'
 						});
 					});
 				},

@@ -40,8 +40,15 @@
 		</style>
 	</head>
 	<body>
-		<h2>Filter Countries by continent or GDP</h2>
+		<h2>Filter Countries by language, continent or GDP</h2>
 		<section class="filters">
+			<select name="lang" data-ignore="all">
+				<option value="all">Filter by language</option>
+				<option value="en">English</option>
+				<option value="fr">French</option>
+				<option value="de">German</option>
+				<option value="it">Italian</option>
+			</select>
 			<select name="continent" data-ignore="all">
 				<option value="all">Filter by continent</option>
 				<option value="asia">Asia</option>
@@ -56,7 +63,7 @@
 			</label>
 			<button class="js-reset">Reset Filters</button>
 		</section>
-		<div class="myList" data-filter-names="continent gdp">
+		<div class="myList" data-filter-names="continent gdp lang">
 			<span data-filter-continent="asia">Afghanistan</span>
 			<span data-filter-continent="asia">Bangladesh</span>
 			<span data-filter-continent="asia" data-filter-gdp="high">Singapore</span>
@@ -73,12 +80,13 @@
 			<span data-filter-continent="eu">Belarus</span>
 			<span data-filter-continent="eu" data-filter-gdp="high">Luxembourg</span>
 			<span data-filter-continent="eu">Denmark</span>
-			<span data-filter-continent="eu" data-filter-gdp="high">Germany</span>
-			<span data-filter-continent="eu">France</span>
-			<span data-filter-continent="eu">Italy</span>
+			<span data-filter-lang="de" data-filter-continent="eu" data-filter-gdp="high">Germany</span>
+			<span data-filter-lang="fr" data-filter-continent="eu" data-filter-gdp="high">France</span>
+			<span data-filter-lang="it" data-filter-continent="eu">Italy</span>
 			<span data-filter-continent="na">Bahamas</span>
-			<span data-filter-continent="na" data-filter-gdp="high">Canada</span>
-			<span data-filter-continent="na" data-filter-gdp="high">United States</span>
+			<span data-filter-lang="fr en" data-filter-continent="na" data-filter-gdp="high">Canada</span>
+			<span data-filter-lang="en" data-filter-continent="na" data-filter-gdp="high">United States</span>
+			<span data-filter-lang="it fr de" data-filter-continent="eu" data-filter-gdp="high">Switzerland</span>
 			<span data-filter-continent="sa">Argentina</span>
 			<span data-filter-continent="sa">Brazil</span>
 			<span data-filter-continent="sa">Chile</span>
@@ -86,7 +94,7 @@
 		</div>
 		<p class="no-results">No results found!</p>
 		<script type="module">
-			import FilterList from '../dist/filterList.min.js';
+			import FilterList from '../src/filterList.js';
 
 			const filter = new FilterList({
 				element: document.querySelector('.myList'),
@@ -102,7 +110,8 @@
 					document.querySelector('button.js-reset').addEventListener('click', () => {
 						this.setFilters({
 							'continent': 'all',
-							'gdp': undefined
+							'gdp': undefined,
+							'lang': 'all'
 						});
 					});
 				},

@@ -187,22 +187,11 @@ export default class FilterList {
 	}
 
 	applyFilters() {
-		let matchedItems = [];
-		let listItems;
-		let newListItems = [];
-
-		if (this.filterSelector) {
-			listItems = this.element.querySelectorAll(this.filterSelector);
-		} else {
-			listItems = this.element.children;
-		}
-
-		//exclude items that shouldn't be filtered
-		for (let item of listItems) {
-			if (!item.classList.contains(this.excludeClass)) {
-				newListItems.push(item);
-			}
-		}
+		const matchedItems = [];
+		const listItems = this.filterSelector ?
+			this.element.querySelectorAll(this.filterSelector) :
+			this.element.children;
+		const newListItems = [...listItems].filter((item) => {return !item.classList.contains(this.excludeClass)});
 
 		if (this.lastClass) {
 			let lastVisibleElement = this.element.querySelector(`.${this.lastClass}`);
@@ -216,12 +205,15 @@ export default class FilterList {
 		[...newListItems].forEach((element) => {
 			let matched = true;
 
-			this.filters.forEach(function(filter) {
+			this.filters.forEach((filter) => {
 				if (filter.value !== undefined && filter.value !== filter.ignoreValue) {
 					//any list item that doesn't have attribute for this filter or
 					//has attribute for this filter with another value should
 					//be filtered out.
-					if (!element.hasAttribute('data-filter-' + filter.name) || element.getAttribute('data-filter-' + filter.name) !== filter.value) {
+					const hasThisFilter = element.hasAttribute('data-filter-' + filter.name);
+					const filterValue =  element.getAttribute('data-filter-' + filter.name);
+
+					if (!hasThisFilter || !filterValue.split(' ').includes(filter.value)) {
 						matched = false;
 						return false;
 					}
