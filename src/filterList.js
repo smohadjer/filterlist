@@ -22,7 +22,7 @@ export default class FilterList {
 		this.filtersCallback = options.filtersCallback;
 		this.url = window.location.href;
 		this.lastClass = options.lastClass || 'last';
-		this.hiddenClass = options.hiddenClass || 'hidden';
+		this.hiddenClass = options.hiddenClass;
 		this.excludeClass = options.excludeFromFilteringClass || 'filterList__exclude';
 		this.filterSelector = options.filterSelector;
 
@@ -226,12 +226,20 @@ export default class FilterList {
 		});
 
 		[...newListItems].forEach((el) => {
-			el.classList.add(this.hiddenClass);
+			if (this.hiddenClass) {
+				el.classList.add(this.hiddenClass);
+			} else {
+				el.setAttribute('hidden', 'hidden');
+			}
 		});
 
 		if (matchedItems.length !== 0) {
 			matchedItems.forEach((item, i) => {
-				item.classList.remove(this.hiddenClass);
+				if (this.hiddenClass) {
+					item.classList.remove(this.hiddenClass);
+				} else {
+					item.removeAttribute('hidden');
+				}
 
 				//add a class to last visible item in the list in case last item in list needs special styling
 				if (this.lastClass && i === matchedItems.length - 1) {

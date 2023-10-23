@@ -1,6 +1,6 @@
 {
   "name": "filterlist",
-  "version": "3.3.0",
+  "version": "3.3.1",
   "description": "filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies.",
   "main": "src/filterList.js",
   "scripts": {

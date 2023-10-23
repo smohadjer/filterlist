@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Minimal demo for filterList</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+		<h2>Filter below list by adding parameter "fruit" to URL, for example url?fruit=apple</h2>
+		<ul data-filter-names="fruit">
+			<li data-filter-fruit="apple">Apple</li>
+			<li data-filter-fruit="orange">Orange</li>
+			<li data-filter-fruit="banana">Banana</li>
+			<li data-filter-fruit="kiwi">Kiwi</li>
+			<li data-filter-fruit="pear">Pear</li>
+		</ul>
+		<script type="module">
+			import FilterList from '../src/filterList.js';
+			const filter = new FilterList({
+				element: document.querySelector('ul'),
+			});
+		</script>
+  </body>
+</html>
