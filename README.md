@@ -18,19 +18,19 @@ Examples on Web:
 ## Usage
 - See minimal demo. Below snippet from that demo can show you how to use the library. See other demo examples for more elaborate ways of using the library.
 ```
-		<ul data-filter-names="fruit">
-			<li data-filter-fruit="apple">Apple</li>
-			<li data-filter-fruit="orange">Orange</li>
-			<li data-filter-fruit="banana">Banana</li>
-			<li data-filter-fruit="kiwi">Kiwi</li>
-			<li data-filter-fruit="pear">Pear</li>
-		</ul>
-		<script type="module">
-			import FilterList from '../src/filterList.js';
-			const filter = new FilterList({
-				element: document.querySelector('ul'),
-			});
-		</script>
+<ul data-filter-names="fruit">
+	<li data-filter-fruit="apple">Apple</li>
+	<li data-filter-fruit="orange">Orange</li>
+	<li data-filter-fruit="banana">Banana</li>
+	<li data-filter-fruit="kiwi">Kiwi</li>
+	<li data-filter-fruit="pear">Pear</li>
+</ul>
+<script type="module">
+	import FilterList from '../src/filterList.js';
+	const filter = new FilterList({
+		element: document.querySelector('ul'),
+	});
+</script>
 ```
 - Name of filters should be set on the list's parent element using data attribute with the syntax `data-filter-names=“filtername1 filtername2”`.
 - List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue1”`. If an item has multiple values for a certain filter separate them by space: `data-filter-filtername=“filtervalue1 filtervalue2”`.
