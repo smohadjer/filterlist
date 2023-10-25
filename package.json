@@ -1,23 +1,23 @@
 {
   "name": "filterlist",
-  "version": "3.3.3",
-  "description": "filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies.",
-  "main": "src/filterList.js",
+  "version": "3.3.4",
+  "description": "filterlist.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies.",
+  "main": "src/filterlist.js",
   "keywords": ["filter", "filtering", "html", "list", "javascript", "elements", "collection"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/filterList.js --bundle --format=esm --minify --sourcemap --outfile=dist/filterList.min.js"
+    "build": "esbuild src/filterlist.js --bundle --format=esm --minify --sourcemap --outfile=dist/filterlist.min.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smohadjer/filterList.git"
+    "url": "git+https://github.com/smohadjer/filterlist.git"
   },
   "author": "Saeid Mohadjer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/smohadjer/filterList/issues"
+    "url": "https://github.com/smohadjer/filterlist/issues"
   },
-  "homepage": "https://github.com/smohadjer/filterList#readme",
+  "homepage": "https://github.com/smohadjer/filterlist#readme",
   "devDependencies": {
     "esbuild": "0.18.20"
   }

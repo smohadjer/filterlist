@@ -2,9 +2,9 @@ FilterList is a small (3.7kb) zero-dependency JavaScript library that allows you
 
 ## Demo
 Examples in GitHub Repo:
-- [Minimal demo filtering via URL parameter](https://smohadjer.github.io/filterList/demo/minimal.html)
-- [Filtering span elements inside a div](https://smohadjer.github.io/filterList/demo/demo-list.html)
-- [Filtering rows in a table](https://smohadjer.github.io/filterList/demo/demo-table.html)
+- [Minimal demo filtering via URL parameter](https://smohadjer.github.io/filterlist/demo/minimal.html)
+- [Filtering span elements inside a div](https://smohadjer.github.io/filterlist/demo/demo-list.html)
+- [Filtering rows in a table](https://smohadjer.github.io/filterlist/demo/demo-table.html)
 
 Examples on Web:
 - [Filtering posts in a blog using tags](https://saeidmohadjer.com/blog)
@@ -26,7 +26,7 @@ Examples on Web:
 	<li data-filter-fruit="pear">Pear</li>
 </ul>
 <script type="module">
-	import FilterList from '../src/filterList.js';
+	import FilterList from '../src/filterlist.js';
 	const filter = new FilterList({
 		element: document.querySelector('ul'),
 	});
