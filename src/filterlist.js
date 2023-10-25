@@ -1,6 +1,6 @@
 'use strict';
 
-export default class FilterList {
+export default class Filterlist {
 	constructor(options) {
 		this.element = options.element;
 		this.urlIsUpdatable = options.urlIsUpdatable || false;
