@@ -6,12 +6,10 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
-			/******** required styles ***********/
 			.myList .hiddenItem {
 				display: none;
 			}
 
-			/********* optional styles **********/
 			.filters {
 				background: #ccc;
 				padding: 20px;
@@ -22,25 +20,8 @@
 				margin-right: 20px;
 			}
 
-			.myList tr {
-				display: table-row;
-			}
-
-		 	.no-results {
-				display: none;
-			}
-
-			.is-empty + .no-results {
-				display: block;
-			}
-
-			.lastVisible {
-				background: yellow;
-			}
-
 			td, th {
 				text-align: left;
-				border-bottom: solid 1px #ccc;
 			}
 		</style>
 	</head>
@@ -100,7 +81,6 @@
 				<tr data-filter-continent="sa"><td>Uruguay</td></tr>
 			</tbody>
 		</table>
-		<p class="no-results">No results found!</p>
 		<script type="module">
 			import FilterList from '../src/filterList.js';
 
@@ -113,7 +93,7 @@
 
 				//is invoked after script is initialized
 				initCallback: function() {
-					//console.log('initCallback', this);
+					console.log('initCallback', this);
 
 					//set handler for reset button
 					document.querySelector('button.js-reset').addEventListener('click', () => {

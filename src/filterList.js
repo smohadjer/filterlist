@@ -222,7 +222,10 @@ export default class FilterList {
 			if (lastVisibleElement) {
 				lastVisibleElement.classList.remove(this.lastClass);
 			}
-			matchedItems[matchedItems.length - 1].classList.add(this.lastClass);
+
+			if (matchedItems.length > 0) {
+				matchedItems[matchedItems.length - 1].classList.add(this.lastClass);
+			}
 		}
 
 		if (typeof this.filtersCallback === 'function') {
