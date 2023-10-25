@@ -68,35 +68,37 @@
 			</label>
 			<button class="js-reset">Reset Filters</button>
 		</section>
-		<table class="myList" data-filter-names="continent gdp lang">
-			<tr class="no-filtering"><th>Countries</th></tr>
-			<tr data-filter-continent="asia"><td>Afghanistan</td></tr>
-			<tr data-filter-continent="asia"><td>Bangladesh</td></tr>
-			<tr data-filter-continent="asia" data-filter-gdp="high"><td>Singapore</td></tr>
-			<tr data-filter-continent="asia" data-filter-gdp="high"><td>Qatar</td></tr>
-			<tr data-filter-continent="asia"><td>Japan</td></tr>
-			<tr data-filter-continent="asia"><td>Nepal</td></tr>
-			<tr data-filter-continent="africa"><td>Algeria</td></tr>
-			<tr data-filter-continent="africa"><td>Angola</td></tr>
-			<tr data-filter-continent="africa"><td>Burkina</td></tr>
-			<tr data-filter-continent="africa"><td>Burundi</td></tr>
-			<tr data-filter-continent="africa"><td>Cameroon</td></tr>
-			<tr data-filter-continent="africa"><td>Chad</td></tr>
-			<tr data-filter-continent="africa"><td>Egypt</td></tr>
-			<tr data-filter-continent="eu"><td>Belarus</td></tr>
-			<tr data-filter-continent="eu" data-filter-gdp="high"><td>Luxembourg</td></tr>
-			<tr data-filter-continent="eu"><td>Denmark</td></tr>
-			<tr data-filter-lang="de" data-filter-continent="eu" data-filter-gdp="high"><td>Germany</td></tr>
-			<tr data-filter-lang="fr" data-filter-continent="eu" data-filter-gdp="high"><td>France</td></tr>
-			<tr data-filter-lang="it fr de" data-filter-continent="eu" data-filter-gdp="high"><td>Switzerland</td></tr>
-			<tr data-filter-lang="it" data-filter-continent="eu"><td>Italy</td></tr>
-			<tr data-filter-continent="na"><td>Bahamas</td></tr>
-			<tr data-filter-lang="en fr" data-filter-continent="na" data-filter-gdp="high"><td>Canada</td></tr>
-			<tr data-filter-lang="en" data-filter-continent="na" data-filter-gdp="high"><td>United States</td></tr>
-			<tr data-filter-continent="sa"><td>Argentina</td></tr>
-			<tr data-filter-continent="sa"><td>Brazil</td></tr>
-			<tr data-filter-continent="sa"><td>Chile</td></tr>
-			<tr data-filter-continent="sa"><td>Uruguay</td></tr>
+		<table>
+			<tbody class="myList" data-filter-names="continent gdp lang">
+				<tr class="no-filtering"><th>Countries</th></tr>
+				<tr data-filter-continent="asia"><td>Afghanistan</td></tr>
+				<tr data-filter-continent="asia"><td>Bangladesh</td></tr>
+				<tr data-filter-continent="asia" data-filter-gdp="high"><td>Singapore</td></tr>
+				<tr data-filter-continent="asia" data-filter-gdp="high"><td>Qatar</td></tr>
+				<tr data-filter-continent="asia"><td>Japan</td></tr>
+				<tr data-filter-continent="asia"><td>Nepal</td></tr>
+				<tr data-filter-continent="africa"><td>Algeria</td></tr>
+				<tr data-filter-continent="africa"><td>Angola</td></tr>
+				<tr data-filter-continent="africa"><td>Burkina</td></tr>
+				<tr data-filter-continent="africa"><td>Burundi</td></tr>
+				<tr data-filter-continent="africa"><td>Cameroon</td></tr>
+				<tr data-filter-continent="africa"><td>Chad</td></tr>
+				<tr data-filter-continent="africa"><td>Egypt</td></tr>
+				<tr data-filter-continent="eu"><td>Belarus</td></tr>
+				<tr data-filter-continent="eu" data-filter-gdp="high"><td>Luxembourg</td></tr>
+				<tr data-filter-continent="eu"><td>Denmark</td></tr>
+				<tr data-filter-lang="de" data-filter-continent="eu" data-filter-gdp="high"><td>Germany</td></tr>
+				<tr data-filter-lang="fr" data-filter-continent="eu" data-filter-gdp="high"><td>France</td></tr>
+				<tr data-filter-lang="it fr de" data-filter-continent="eu" data-filter-gdp="high"><td>Switzerland</td></tr>
+				<tr data-filter-lang="it" data-filter-continent="eu"><td>Italy</td></tr>
+				<tr data-filter-continent="na"><td>Bahamas</td></tr>
+				<tr data-filter-lang="en fr" data-filter-continent="na" data-filter-gdp="high"><td>Canada</td></tr>
+				<tr data-filter-lang="en" data-filter-continent="na" data-filter-gdp="high"><td>United States</td></tr>
+				<tr data-filter-continent="sa"><td>Argentina</td></tr>
+				<tr data-filter-continent="sa"><td>Brazil</td></tr>
+				<tr data-filter-continent="sa"><td>Chile</td></tr>
+				<tr data-filter-continent="sa"><td>Uruguay</td></tr>
+			</tbody>
 		</table>
 		<p class="no-results">No results found!</p>
 		<script type="module">
@@ -107,7 +109,6 @@
 				urlIsUpdatable: true,
 				lastClass: 'lastVisible',
 				hiddenClass: 'hiddenItem',
-				filterSelector: 'tr',
 				excludeFromFilteringClass: 'no-filtering',
 
 				//is invoked after script is initialized
@@ -126,7 +127,7 @@
 
 				//is invoked every time filters are applied
 				filtersCallback: function() {
-					//console.log('filtersCallback', this.filters);
+					console.log('filtersCallback', this.filters);
 				}
 			});
 		</script>
