@@ -1,4 +1,4 @@
-FilterList is a small (3.7kb) zero-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data attributes to them. Filtering can be triggered via URL queries, or HTML form elements, or programmatically via a script.
+Filterlist is a small (3.7kb) zero-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data attributes to them. Filtering can be triggered via URL queries, or HTML form elements, or programmatically via a script.
 
 ## Demo
 Examples in GitHub Repo:
@@ -26,8 +26,8 @@ Examples on Web:
 	<li data-filter-fruit="pear">Pear</li>
 </ul>
 <script type="module">
-	import FilterList from '../src/filterlist.js';
-	const filter = new FilterList({
+	import Filterlist from '../src/filterlist.js';
+	const filterlist = new Filterlist({
 		element: document.querySelector('ul'),
 	});
 </script>

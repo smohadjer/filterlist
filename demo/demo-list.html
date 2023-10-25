@@ -95,9 +95,9 @@
 		</div>
 		<p class="no-results">No results found!</p>
 		<script type="module">
-			import FilterList from '../src/filterlist.js';
+			import Filterlist from '../src/filterlist.js';
 
-			const filter = new FilterList({
+			const filterlist = new Filterlist({
 				element: document.querySelector('.myList'),
 				urlIsUpdatable: true,
 				lastClass: 'lastVisible',
@@ -119,7 +119,7 @@
 
 				//is invoked every time filters are applied
 				filtersCallback: function() {
-					//console.log('filtersCallback', this.filters);
+					console.log('filtersCallback', this.filters);
 				}
 			});
 		</script>
