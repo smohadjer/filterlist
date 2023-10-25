@@ -3,7 +3,7 @@
   "version": "3.3.3",
   "description": "filterList.js allows filtering of any HTML list or group of elements via data attributes. Filters can be set or changed via URL parameters, or form elements, or by other scripts. The script is written in plain JavaScript and has no dependencies.",
   "main": "src/filterList.js",
-  "keywords": ["filter", "filtering", "html", "elements", "collection"],
+  "keywords": ["filter", "filtering", "html", "list", "javascript", "elements", "collection"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "esbuild src/filterList.js --bundle --format=esm --minify --sourcemap --outfile=dist/filterList.min.js"
