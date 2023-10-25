@@ -7,6 +7,15 @@ document.body.innerHTML =
 '  <li data-filter-fruit="orange">orange</li>' +
 '</ul>';
 
+const url = new URL('http://www.saeidmohadjer.com/');
+const filters = [
+  {
+    name: "fruit",
+    value: "apple",
+    ignoreValue: "all"
+  }
+];
+
 const filterlist = new Filterlist({
   element: document.querySelector('.list')
 });
@@ -14,5 +23,9 @@ const filterlist = new Filterlist({
 describe("Filterlist", () => {
   test("defines updateURL()", () => {
     expect(typeof filterlist.updateURL).toBe("function");
+  });
+
+  test("updateURL returns a URL object", () => {
+    expect(typeof filterlist.updateURL(url, filters)).toBe('object');
   });
 });
