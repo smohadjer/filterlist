@@ -1,6 +1,6 @@
-Filterlist is a small (3.7kb) no-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data attributes to them. Filtering can be triggered via URL queries, or HTML form elements, or programmatically via a script.
+Filterlist is a small (4kb) TypeScript library with no dependencies that allows filtering of arbitrary HTML elements via data attributes. Filtering can be triggered using URL parameters, or by adding form elements to page, or programmatically via another script.
 
-## Demo
+## Examples
 Examples in GitHub Repo:
 - [Minimal demo filtering via URL parameter](https://smohadjer.github.io/filterlist/demo/minimal.html)
 - [Filtering span elements inside a div](https://smohadjer.github.io/filterlist/demo/demo-list.html)
@@ -12,11 +12,12 @@ Examples on Web:
 
 ## Features
 - Requires no CSS
-- Updates URL after filter is changed without a page refresh
+- Optionally updates URL when filters are changed without page refresh
 - Can be used with any group of HTML elements
+- Allows binding form fields to HTML elements via data-attributes (no scripting necessay)
 
 ## Usage
-- See minimal demo. Below snippet from that demo can show you how to use the library. See other demo examples for more elaborate ways of using the library.
+- See minimal demo. Following snippet is a minimal example. See other demo for more elaborate ways of using the library.
 ```
 <ul data-filter-names="fruit">
 	<li data-filter-fruit="apple">Apple</li>
