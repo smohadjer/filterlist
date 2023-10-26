@@ -1,6 +1,6 @@
 {
   "name": "filterlist",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "filterlist.js is a small (3.7kb) no-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data attributes to them. Filtering can be triggered via URL queries, or HTML form elements, or programmatically via a script.",
   "main": "src/filterlist.js",
   "type": "module",
@@ -15,7 +15,9 @@
   ],
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --testEnvironment=jsdom",
-    "build": "esbuild src/filterlist.js --bundle --format=esm --minify --sourcemap --outfile=dist/filterlist.min.js"
+    "start": "esbuild src/filterlist.ts --bundle --watch=forever --format=esm --sourcemap --outfile=dist/filterlist.js & npm run server",
+    "build": "esbuild src/filterlist.ts --bundle --format=esm --minify --sourcemap --outfile=dist/filterlist.min.js",
+    "server": "node node_modules/alive-server/live-server.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
   "devDependencies": {
     "esbuild": "0.18.20",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^29.7.0",
+    "alive-server": "^1.3.0"
   }
 }
