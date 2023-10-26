@@ -1,6 +1,6 @@
 {
   "name": "filterlist",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "filterlist.js is a small (3.7kb) no-dependency JavaScript library that allows you to filter any arbitrary group of HTML elements by adding data attributes to them. Filtering can be triggered via URL queries, or HTML form elements, or programmatically via a script.",
   "main": "src/filterlist.js",
   "type": "module",

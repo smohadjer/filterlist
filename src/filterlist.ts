@@ -2,37 +2,49 @@
 
 type filter = {
 	name: string,
-	value: string,
-	ignoreValue: string
+	value?: string,
+	ignoreValue?: string
 };
 type filters = filter[];
 type filterNames = string[];
 
+interface Options {
+	element: HTMLElement;
+	excludeFromFilteringClass?: string;
+	hiddenClass?: string;
+	lastClass?: string;
+	filters?: filters;
+	urlIsUpdatable?: boolean;
+	filterNames?: filterNames;
+	initCallback?: Function;
+	filtersCallback?: Function;
+};
+
 export default class Filterlist {
 	element: HTMLElement;
 	excludeClass: string;
-	hiddenClass: string;
+	hiddenClass: string | undefined;
 	lastClass: string;
 	filters: filters;
 	urlIsUpdatable: boolean;
 	filterNames: filterNames;
-	initCallback: Function;
-	filtersCallback: Function;
+	initCallback: Function | undefined
+	filtersCallback: Function | undefined;
 
-	constructor(options) {
+	constructor(options: Options) {
 		this.element = options.element;
-		this.urlIsUpdatable = options.urlIsUpdatable || false;
+		this.excludeClass = options.excludeFromFilteringClass || 'filterList__exclude';
+		this.hiddenClass = options.hiddenClass;
+		this.lastClass = options.lastClass || 'last';
 		this.filters = [];
+		this.urlIsUpdatable = options.urlIsUpdatable || false;
 		this.filterNames = [];
 		this.initCallback = options.initCallback;
 		this.filtersCallback = options.filtersCallback;
-		this.lastClass = options.lastClass || 'last';
-		this.hiddenClass = options.hiddenClass;
-		this.excludeClass = options.excludeFromFilteringClass || 'filterList__exclude';
 
 		if (this.element && this.element.hasAttribute('data-filter-names')) {
 			const attr = this.element.getAttribute('data-filter-names');
-			if (attr.length > 0) {
+			if (attr && attr.length > 0) {
 				this.filterNames = attr.split(' ');
 			} else {
 				console.warn('data-filter-names has no value');
@@ -79,8 +91,9 @@ export default class Filterlist {
 		let value: string | undefined = undefined;
 
 		if (filterElement) {
+			const dataAttr = filterElement.getAttribute('data-ignore');
 			if (filterElement.tagName === 'SELECT') {
-				value = filterElement.getAttribute('data-ignore');
+				value = dataAttr || undefined;
 			}
 		} else {
 			console.warn('No filter with name ' + filterName + ' was found in markup!');
@@ -213,8 +226,9 @@ export default class Filterlist {
 			applicableFilters.forEach((filter) => {
 					const hasThisFilter = element.hasAttribute('data-filter-' + filter.name);
 					const filterValue =  element.getAttribute('data-filter-' + filter.name);
+					const elementMatchesFilter = (filterValue && filter.value) ? filterValue.split(' ').includes(filter.value) : false;
 
-					if (!hasThisFilter || !filterValue.split(' ').includes(filter.value)) {
+					if (!hasThisFilter || !elementMatchesFilter) {
 						matched = false;
 					}
 			});

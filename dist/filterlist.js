@@ -11,17 +11,17 @@ var Filterlist = class {
   filtersCallback;
   constructor(options) {
     this.element = options.element;
-    this.urlIsUpdatable = options.urlIsUpdatable || false;
+    this.excludeClass = options.excludeFromFilteringClass || "filterList__exclude";
+    this.hiddenClass = options.hiddenClass;
+    this.lastClass = options.lastClass || "last";
     this.filters = [];
+    this.urlIsUpdatable = options.urlIsUpdatable || false;
     this.filterNames = [];
     this.initCallback = options.initCallback;
     this.filtersCallback = options.filtersCallback;
-    this.lastClass = options.lastClass || "last";
-    this.hiddenClass = options.hiddenClass;
-    this.excludeClass = options.excludeFromFilteringClass || "filterList__exclude";
     if (this.element && this.element.hasAttribute("data-filter-names")) {
       const attr = this.element.getAttribute("data-filter-names");
-      if (attr.length > 0) {
+      if (attr && attr.length > 0) {
         this.filterNames = attr.split(" ");
       } else {
         console.warn("data-filter-names has no value");
@@ -60,8 +60,9 @@ var Filterlist = class {
     const filterElement = document.querySelector(`[name="${filterName}"]`);
     let value = void 0;
     if (filterElement) {
+      const dataAttr = filterElement.getAttribute("data-ignore");
       if (filterElement.tagName === "SELECT") {
-        value = filterElement.getAttribute("data-ignore");
+        value = dataAttr || void 0;
       }
     } else {
       console.warn("No filter with name " + filterName + " was found in markup!");
@@ -173,7 +174,8 @@ var Filterlist = class {
       applicableFilters.forEach((filter) => {
         const hasThisFilter = element.hasAttribute("data-filter-" + filter.name);
         const filterValue = element.getAttribute("data-filter-" + filter.name);
-        if (!hasThisFilter || !filterValue.split(" ").includes(filter.value)) {
+        const elementMatchesFilter = filterValue && filter.value ? filterValue.split(" ").includes(filter.value) : false;
+        if (!hasThisFilter || !elementMatchesFilter) {
           matched = false;
         }
       });
