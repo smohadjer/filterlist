@@ -17,21 +17,37 @@ Examples on Web:
 - Allows binding form fields to HTML elements via data-attributes (no scripting necessay)
 
 ## Usage
-- See minimal demo. Following snippet is a minimal example. See other demo for more elaborate ways of using the library.
+- Below snippet shows how to filter a list via a select element:
 ```
-<ul data-filter-names="fruit">
-	<li data-filter-fruit="apple">Apple</li>
-	<li data-filter-fruit="orange">Orange</li>
-	<li data-filter-fruit="banana">Banana</li>
-	<li data-filter-fruit="kiwi">Kiwi</li>
-	<li data-filter-fruit="pear">Pear</li>
-</ul>
-<script type="module">
-	import Filterlist from '../src/filterlist.js';
-	const filterlist = new Filterlist({
-		element: document.querySelector('ul'),
-	});
-</script>
+		<select data-ignore="all" name="type">
+			<option value="all">Select type</option>
+			<option value="fruit">fruit</option>
+			<option value="vegetable">vegetable</option>
+			<option value="dairy">dairy</option>
+		</select>
+		<ul data-filter-names="type">
+			<li data-filter-type="fruit">Apple</li>
+			<li data-filter-type="fruit">Banana</li>
+			<li data-filter-type="dairy">Butter</li>
+			<li data-filter-type="vegetable">Carrot</li>
+			<li data-filter-type="dairy">Cheese</li>
+			<li data-filter-type="dairy">Cream</li>
+			<li data-filter-type="fruit">Kiwi</li>
+			<li data-filter-type="dairy">Milk</li>
+			<li data-filter-type="vegetable">Onion</li>
+			<li data-filter-type="fruit">Orange</li>
+			<li data-filter-type="fruit">Pear</li>
+			<li data-filter-type="vegetable">Tomato</li>
+			<li data-filter-type="dairy">Yogurt</li>
+		</ul>
+
+		<script type="module">
+			import Filterlist from '../dist/filterlist.js';
+			const filterlist = new Filterlist({
+				element: document.querySelector('ul'),
+				urlIsUpdatable: true
+			});
+		</script>
 ```
 - Name of filters should be set on the list's parent element using data attribute with the syntax `data-filter-names=“filtername1 filtername2”`.
 - List items that match a filter need a data attribute with syntax `data-filter-filtername=“filtervalue1”`. If an item has multiple values for a certain filter separate them by space: `data-filter-filtername=“filtervalue1 filtervalue2”`.

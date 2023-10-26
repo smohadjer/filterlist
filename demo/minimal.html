@@ -7,18 +7,33 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
-		<h2>Filter below list by adding parameter "fruit" to URL, for example url?fruit=apple</h2>
-		<ul data-filter-names="fruit">
-			<li data-filter-fruit="apple">Apple</li>
-			<li data-filter-fruit="orange">Orange</li>
-			<li data-filter-fruit="banana">Banana</li>
-			<li data-filter-fruit="kiwi">Kiwi</li>
-			<li data-filter-fruit="pear">Pear</li>
+		<h2>Filter the list by adding parameter "type" to URL, for example ?type=fruit or using dropdown:</h2>
+		<select data-ignore="all" name="type">
+			<option value="all">Select type</option>
+			<option value="fruit">fruit</option>
+			<option value="vegetable">vegetable</option>
+			<option value="dairy">dairy</option>
+		</select>
+		<ul data-filter-names="type">
+			<li data-filter-type="fruit">Apple</li>
+			<li data-filter-type="fruit">Banana</li>
+			<li data-filter-type="dairy">Butter</li>
+			<li data-filter-type="vegetable">Carrot</li>
+			<li data-filter-type="dairy">Cheese</li>
+			<li data-filter-type="dairy">Cream</li>
+			<li data-filter-type="fruit">Kiwi</li>
+			<li data-filter-type="dairy">Milk</li>
+			<li data-filter-type="vegetable">Onion</li>
+			<li data-filter-type="fruit">Orange</li>
+			<li data-filter-type="fruit">Pear</li>
+			<li data-filter-type="vegetable">Tomato</li>
+			<li data-filter-type="dairy">Yogurt</li>
 		</ul>
 		<script type="module">
 			import Filterlist from '../dist/filterlist.js';
 			const filterlist = new Filterlist({
 				element: document.querySelector('ul'),
+				urlIsUpdatable: true
 			});
 		</script>
   </body>
