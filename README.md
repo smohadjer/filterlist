@@ -2,7 +2,7 @@ Filterlist is a small (4kb) TypeScript library with no dependencies that allows 
 
 ## Examples
 Examples in GitHub Repo:
-- [Minimal demo filtering via URL parameter](https://smohadjer.github.io/filterlist/demo/minimal.html)
+- [Minimal demo](https://smohadjer.github.io/filterlist/demo/minimal.html)
 - [Filtering span elements inside a div](https://smohadjer.github.io/filterlist/demo/demo-list.html)
 - [Filtering rows in a table](https://smohadjer.github.io/filterlist/demo/demo-table.html)
 
