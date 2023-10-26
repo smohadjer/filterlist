@@ -1,4 +1,4 @@
-import Filterlist from './filterList.js';
+import Filterlist from '../dist/filterlist.js';
 
 // Set up our document body
 document.body.innerHTML =
