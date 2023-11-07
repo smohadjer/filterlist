@@ -191,13 +191,13 @@ var Filterlist = class {
     });
     const matchedItems = this.getMatchedItems(listItems);
     listItems.forEach((el) => {
-      this.hiddenClass ? el.classList.add(this.hiddenClass) : el.setAttribute("hidden", "hidden");
+      this.hiddenClass ? el.classList.add(this.hiddenClass) : el.style.display = "none";
     });
     if (matchedItems.length === 0) {
       element.classList.add("is-empty");
     } else {
-      matchedItems.forEach((item) => {
-        this.hiddenClass ? item.classList.remove(this.hiddenClass) : item.removeAttribute("hidden");
+      matchedItems.forEach((el) => {
+        this.hiddenClass ? el.classList.remove(this.hiddenClass) : el.style.display = "";
       });
       element.classList.remove("is-empty");
     }
@@ -214,7 +214,6 @@ var Filterlist = class {
       this.filtersCallback();
     }
   }
-  // url is a URL object
   updateURL(url, filters) {
     filters.forEach((filter) => {
       if (filter.value === void 0 || filter.value.length === 0 || filter.value === filter.ignoreValue) {

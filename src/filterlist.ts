@@ -136,7 +136,7 @@ export default class Filterlist {
 	}
 
 	updateFilters(updatedFilter) {
-		let filter = this.filters.find((filter) => filter.name === updatedFilter.name);
+		let filter = this.filters.find(filter => filter.name === updatedFilter.name);
 
 		if (filter && filter.value !== updatedFilter.value) {
 			filter.value = updatedFilter.value;
@@ -179,13 +179,15 @@ export default class Filterlist {
 
 	updateDOM(filters) {
 		filters.forEach((filter) => {
-			const element: HTMLSelectElement | HTMLInputElement | null = document.querySelector(`[name="${filter.name}"]`);
+			const element: HTMLSelectElement | HTMLInputElement | null =
+				document.querySelector(`[name="${filter.name}"]`);
 			if (element) {
 				if (element.tagName === 'SELECT') {
 					element.value = filter.value;
 				} else if (element.tagName === 'INPUT') {
 					if (element.getAttribute('type') === 'checkbox') {
-						(element as HTMLInputElement).checked = (element.value === filter.value) ? true : false;
+						(element as HTMLInputElement).checked =
+							(element.value === filter.value) ? true : false;
 					}
 				}
 			}
@@ -226,7 +228,8 @@ export default class Filterlist {
 			applicableFilters.forEach((filter) => {
 					const hasThisFilter = element.hasAttribute('data-filter-' + filter.name);
 					const filterValue =  element.getAttribute('data-filter-' + filter.name);
-					const elementMatchesFilter = (filterValue && filter.value) ? filterValue.split(' ').includes(filter.value) : false;
+					const elementMatchesFilter = (filterValue && filter.value) ?
+						filterValue.split(' ').includes(filter.value) : false;
 
 					if (!hasThisFilter || !elementMatchesFilter) {
 						matched = false;
@@ -242,22 +245,24 @@ export default class Filterlist {
 	}
 
 	applyFilters(element: HTMLElement) {
-		const listItems = [...element.children].filter((item) => {return !item.classList.contains(this.excludeClass)});
+		const listItems = [...element.children].filter((item) => {
+			return !item.classList.contains(this.excludeClass)
+		}) as HTMLElement[];
 		const matchedItems = this.getMatchedItems(listItems as HTMLElement[]);
 
 		// hide all items
-		listItems.forEach((el) => {
+		listItems.forEach((el: HTMLElement) => {
 			this.hiddenClass ? el.classList.add(this.hiddenClass) :
-				el.setAttribute('hidden', 'hidden');
+				el.style.display = 'none';
 		});
 
 		// unhide matched items
 		if (matchedItems.length === 0) {
 			element.classList.add('is-empty');
 		} else {
-			matchedItems.forEach((item) => {
-				this.hiddenClass ? item.classList.remove(this.hiddenClass) :
-					item.removeAttribute('hidden');
+			matchedItems.forEach((el: HTMLElement) => {
+				this.hiddenClass ? el.classList.remove(this.hiddenClass) :
+					el.style.display = '';
 			});
 			element.classList.remove('is-empty');
 		}
@@ -279,7 +284,6 @@ export default class Filterlist {
 		}
 	}
 
-	// url is a URL object
 	updateURL(url: URL, filters:filters) {
 		filters.forEach((filter) => {
 			if (filter.value === undefined ||

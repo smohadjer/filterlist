@@ -6,11 +6,6 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<style>
-			/******** required styles ***********/
-			.myList .hiddenItem {
-				display: none;
-			}
-
 			/********* optional styles **********/
 			.filters {
 				background: #ccc;
@@ -101,7 +96,6 @@
 				element: document.querySelector('.myList'),
 				urlIsUpdatable: true,
 				lastClass: 'lastVisible',
-				hiddenClass: 'hiddenItem',
 
 				//is invoked after script is initialized
 				initCallback: function() {

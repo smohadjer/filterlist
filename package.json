@@ -1,6 +1,6 @@
 {
   "name": "filterlist",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "description": "filter lists, tables, or any collection of html elements without page reload. Multiple filters can be set using data attributes or url parameters or javascript.",
   "main": "src/filterlist.js",
   "type": "module",
